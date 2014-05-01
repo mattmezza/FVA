@@ -11,6 +11,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_centerInParent="true"
+        android:text="@string/hello_world"
+        android:textSize="@dimen/hello_world_size" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/team_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/red" />
 
 </RelativeLayout>
