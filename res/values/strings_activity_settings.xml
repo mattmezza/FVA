@@ -1,0 +1,33 @@
+<resources>
+
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string><string name="pref_header_algo">Algorithm</string>
+
+    <!-- Example settings for Data & Sync -->
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_title_nof_images">Images</string>
+    <string name="pref_title_use_lbp">LBP</string>
+    <string name="pref_title_use_sift">SIFT</string>
+    <string name="pref_desc_use_sift">Use SIFT algorithm to extract features</string>
+    <string name="pref_desc_use_fbp">Use fbp algorithm to extract features</string>
+    <string name="pref_desc_nof_images">Number of images used to extract features</string>
+    <string-array name="pref_nof_images_entries">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
+    </string-array>
+    <string-array name="pref_nof_images_values">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
+    </string-array>
+
+</resources>

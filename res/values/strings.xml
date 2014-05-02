@@ -6,5 +6,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="team_name">Gruppo 2</string>
+    <string name="noImgDesc">Numero Immagini</string>
+    <string name="siftCheckLbl">SIFT</string>
+    <string name="lbpCheckLbl">LBP</string>
 
 </resources>

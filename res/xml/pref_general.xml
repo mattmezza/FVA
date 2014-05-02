@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+
+    <!--
+         NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it.
+    -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_nof_images_entries"
+        android:key="nof_images"
+        android:negativeButtonText="Cancel"
+        android:positiveButtonText="Ok"
+        android:title="@string/pref_title_nof_images" android:summary="@string/pref_desc_nof_images" android:entryValues="@array/pref_nof_images_values"/>
+
+</PreferenceScreen>

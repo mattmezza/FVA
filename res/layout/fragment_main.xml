@@ -9,13 +9,6 @@
     tools:context="com.example.earify.MainActivity$PlaceholderFragment" >
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/hello_world"
-        android:textSize="@dimen/hello_world_size" />
-
-    <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,5 +18,24 @@
         android:text="@string/team_name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/red" />
+
+    <TextView
+        android:id="@+id/noImgSeekLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp"
+        android:text="@string/hello_world"
+        android:textSize="@dimen/hello_world_size" />
+
+    <TextView
+        android:id="@+id/settings_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/noImgSeekLbl"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="71dp"
+        android:text="-" />
 
 </RelativeLayout>

@@ -14,12 +14,18 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.earify.MainActivity"
-            android:label="@string/title_activity_main" android:theme="@style/AppBaseTheme">
+            android:name="com.example.earify.ui.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppBaseTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.earify.ui.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 
