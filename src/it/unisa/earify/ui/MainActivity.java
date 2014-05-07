@@ -2,9 +2,9 @@ package it.unisa.earify.ui;
 
 import it.unisa.earify.config.Config;
 
-import com.example.earify.R;
-import com.example.earify.R.id;
-import com.example.earify.R.layout;
+import it.unisa.earify.R;
+import it.unisa.earify.R.id;
+import it.unisa.earify.R.layout;
 
 import android.app.Activity;
 import android.app.ActionBar;

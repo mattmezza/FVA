@@ -1,6 +1,6 @@
 package it.unisa.earify;
 
-import com.example.earify.R;
+import it.unisa.earify.R;
 
 import android.app.Activity;
 import android.app.ActionBar;

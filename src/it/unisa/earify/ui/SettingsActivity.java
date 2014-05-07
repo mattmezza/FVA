@@ -20,9 +20,9 @@ import android.text.TextUtils;
 
 import java.util.List;
 
-import com.example.earify.R;
-import com.example.earify.R.string;
-import com.example.earify.R.xml;
+import it.unisa.earify.R;
+import it.unisa.earify.R.string;
+import it.unisa.earify.R.xml;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
