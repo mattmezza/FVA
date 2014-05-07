@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.earify.ui.MainActivity"
+            android:name="it.unisa.earify.ui.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppBaseTheme" >
             <intent-filter>
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.earify.ui.SettingsActivity"
+            android:name="it.unisa.earify.ui.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
     </application>
