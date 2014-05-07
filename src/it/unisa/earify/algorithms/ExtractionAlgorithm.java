@@ -4,14 +4,8 @@ import java.util.List;
 
 import android.media.Image;
 
-public abstract class ExtractionAlgorithm {
+public interface ExtractionAlgorithm {
 
-	public abstract List<Integer> calculate(Image image);
-	
-	public static String getAlgorithm() {
-		return ALGORITHM;
-	}
-	
-	protected static String ALGORITHM;
+	public List<Integer> calculate(Image image);
 	
 }
