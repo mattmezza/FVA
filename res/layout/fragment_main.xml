@@ -19,23 +19,74 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/red" />
 
-    <TextView
-        android:id="@+id/noImgSeekLbl"
+    <EditText
+        android:id="@+id/username_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp"
-        android:text="@string/hello_world"
-        android:textSize="@dimen/hello_world_size" />
+        android:layout_marginTop="34dp"
+        android:ems="10"
+        android:hint="@string/username_ph" >
 
-    <TextView
-        android:id="@+id/settings_tv"
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/select_pictures_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/noImgSeekLbl"
+        android:layout_below="@+id/username_tv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="71dp"
-        android:text="-" />
+        android:layout_marginTop="18dp"
+        android:text="@string/select_pictures" />
+
+    <EditText
+        android:id="@+id/fake_quality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/username_tv"
+        android:layout_below="@+id/select_pictures_button"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/fake_quality_ph"
+        android:inputType="numberDecimal" />
+
+    <RadioGroup
+        android:id="@+id/action_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fake_quality"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp" >
+
+        <RadioButton
+            android:id="@+id/register_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/register_btn" />
+
+        <RadioButton
+            android:id="@+id/verify_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/verify_btn" />
+
+        <RadioButton
+            android:id="@+id/recognition_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recognition_btn" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/go_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="42dp"
+        android:text="@string/go_btn" />
 
 </RelativeLayout>

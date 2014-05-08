@@ -246,6 +246,6 @@ proguard/
 
 
 # ignore custom jni/Android.mk
-*.mk
 # ignore libEarify.so
+jni/Android.mk
 libs/armeabi/libEarify.so

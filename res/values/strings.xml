@@ -9,5 +9,13 @@
     <string name="noImgDesc">Numero Immagini</string>
     <string name="siftCheckLbl">SIFT</string>
     <string name="lbpCheckLbl">LBP</string>
+    <string name="title_activity_browse_picture">BrowsePictureActivity</string>
+    <string name="select_pictures">Select Pictures</string>
+    <string name="username_ph">Enter your username</string>
+    <string name="fake_quality_ph">Enter (fake) quality</string>
+    <string name="register_btn">Register</string>
+    <string name="verify_btn">Verify</string>
+    <string name="recognition_btn">Recognize</string>
+    <string name="go_btn">Go!</string>
 
 </resources>
