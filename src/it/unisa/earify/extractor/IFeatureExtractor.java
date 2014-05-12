@@ -7,8 +7,8 @@ import android.media.Image;
 
 public interface IFeatureExtractor {
 	
-	public void register(List<Image> images, String username, float quality);
+	public void register(List<Image> pImages, String pUsername, int pEar, float pQuality);
 	
-	public Map<String, List<List<Integer>>> extractFeature(List<Image> images, String username, float quality);
+	public Map<String, List<List<Double>>> extractFeature(List<Image> pImages, String pUsername, int pEar, float pQuality);
 	
 }
