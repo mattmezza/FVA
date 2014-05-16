@@ -75,7 +75,8 @@ public class AcquisitionControl {
 		
 	    if (cursor == null)
 	    	return null;
-        cursor.moveToFirst();
+	    if (!cursor.moveToFirst())
+			return null;
 	    
 	    List<Acquisition> acquisitions = new ArrayList<Acquisition>();
 	    
@@ -140,7 +141,8 @@ public class AcquisitionControl {
 		
 		if (cursor == null)
 			return null;
-		cursor.moveToFirst();
+		if (!cursor.moveToFirst())
+			return null;
 		
 		List<IFeature> features = new ArrayList<IFeature>();
 		do {

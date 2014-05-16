@@ -39,7 +39,7 @@ public class TableAcquisitions {
 	 */
 	public static void onCreate(SQLiteDatabase db) {
 		String CREATE_ACQUISITIONS_TABLE
-				= "CREATE " + TABLE_ACQUISITIONS + " features ("
+				= "CREATE TABLE " + TABLE_ACQUISITIONS + " ("
 				+ 	COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," 
 				+ 	COLUMN_ALGORITHM + " TEXT,"
 				+ 	COLUMN_USER + " INTEGER,"

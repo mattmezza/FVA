@@ -30,7 +30,7 @@ public class TableFeatures {
 	 */
 	public static void onCreate(SQLiteDatabase db) {
 		String CREATE_FEATURES_TABLE
-				= "CREATE " + TABLE_FEATURES + " features ("
+				= "CREATE TABLE " + TABLE_FEATURES + " ("
 				+ 	COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," 
 				+ 	COLUMN_DATA + " BLOB,"
 				+ 	COLUMN_ACQUISITION + " INTEGER,"

@@ -63,7 +63,8 @@ public class UsersControl {
 		
 		if (cursor == null)
 			return null;
-		cursor.moveToFirst();
+		if (!cursor.moveToFirst())
+			return null;
 		
 		User user = new User();
 		user.setId(cursor.getInt(0));
@@ -90,7 +91,8 @@ public class UsersControl {
 		
 		if (cursor == null)
 			return null;
-		cursor.moveToFirst();
+		if (!cursor.moveToFirst())
+			return null;
 		
 		User user = new User();
 		user.setId(cursor.getInt(0));
