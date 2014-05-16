@@ -1,7 +1,12 @@
 package it.unisa.earify.database.users;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.unisa.earify.database.EarifyDatabaseHelper;
 import it.unisa.earify.database.TableUsers;
+import it.unisa.earify.database.acquisitions.Acquisition;
+import it.unisa.earify.database.acquisitions.AcquisitionControl;
 import it.unisa.earify.database.exceptions.AlreadyRegisteredUserException;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -96,7 +101,26 @@ public class UsersControl {
 		return user;
 	}
 	
+	/**
+	 * Elimina l'utente specificato dal database
+	 * @param pUsername Nome dell'utente da eliminare
+	 */
 	public void deleteUser(String pUsername) {
+		AcquisitionControl acquisitionControl = AcquisitionControl.getInstance();
+		List<Acquisition> acquisitions = new ArrayList<Acquisition>();
+		
+		User user = this.getUser(pUsername);
+		
+		acquisitions.addAll(acquisitionControl.getAcquisitions(user, Acquisition.EAR_LEFT));
+		acquisitions.addAll(acquisitionControl.getAcquisitions(user, Acquisition.EAR_RIGHT));
+		
+		for (Acquisition acquisition : acquisitions) 
+			acquisitionControl.deleteAcquisition(acquisition);
+		
+		SQLiteDatabase db = EarifyDatabaseHelper.getInstance().getWritableDatabase();
+		db.delete(TableUsers.TABLE_USERS, 
+				  TableUsers.COLUMN_ID + " = ?", 
+				  new String[] {String.valueOf(user.getId())});
 	}
 	
 	private UsersControl() {};
