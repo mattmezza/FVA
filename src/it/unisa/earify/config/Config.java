@@ -6,11 +6,13 @@ import android.preference.PreferenceManager;
 
 public class Config {
 
-	public Config(Context context) {
-		this.context = context;
-		this.sp = PreferenceManager.getDefaultSharedPreferences(context);
+	public static Config getInstance() {
+		if (Config.INSTANCE == null) {
+			Config.INSTANCE = new Config();
+		}
+		return Config.INSTANCE;
 	}
-
+	
 	public boolean lbp() {
 		return this.sp.getBoolean("extr_algo_use_lbp", false);
 	}
@@ -23,6 +25,16 @@ public class Config {
 		return Integer.parseInt(this.sp.getString("nof_images", "1"));
 	}
 	
-	private Context context;
+	public static void setContext(Context context) {
+		Config.CONTEXT = context;
+	}
+	
+	private Config() {
+		this.sp = PreferenceManager.getDefaultSharedPreferences(Config.CONTEXT);
+	}
+	
+
+	private static Config INSTANCE;
+	private static Context CONTEXT;
 	private SharedPreferences sp;
 }

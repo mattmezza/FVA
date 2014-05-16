@@ -1,5 +1,6 @@
 package it.unisa.earify.extractor;
 
+import it.unisa.earify.algorithms.IFeature;
 import it.unisa.earify.extractor.exceptions.InvalidActionException;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class FeatureExtractorAbstraction {
 		this.implementor = new FeaturesExtractor();
 	}
 	
-	public Map<String, List<List<Double>>> extractFeatures(int pAction, List<Image> pImages, String pUsername, int pEar, float pQuality) throws InvalidActionException {
+	public Map<String, List<List<IFeature>>> extractFeatures(int pAction, List<Image> pImages, String pUsername, int pEar, float pQuality) throws InvalidActionException {
 		if (pAction == REGISTRATION) {
 			this.implementor.register(pImages, pUsername, pEar, pQuality);
 			return null;
