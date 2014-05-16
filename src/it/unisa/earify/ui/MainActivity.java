@@ -1,18 +1,28 @@
 package it.unisa.earify.ui;
 
+import it.unisa.earify.FeatureExtractorAbstraction;
 import it.unisa.earify.R;
+import it.unisa.earify.algorithms.IFeature;
 import it.unisa.earify.config.Config;
+import it.unisa.earify.database.EarifyDatabaseHelper;
+import it.unisa.earify.exceptions.InvalidActionException;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +42,7 @@ public class MainActivity extends Activity {
 	private ArrayList<String> imagesPath;
 	private static final int SELECT_PICTURE = 4;
 	int selectedImages = 0;
+	private List<Bitmap> im2extr = new ArrayList<Bitmap>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +64,9 @@ public class MainActivity extends Activity {
                                 "Select Picture"), SELECT_PICTURE);
                     }
          });
+        
+        Config.setContext(this);
+        EarifyDatabaseHelper.init(this);
         
 /*        ((Button) findViewById(R.id.ear_sx))
         .setOnClickListener(new OnClickListener() {
@@ -77,7 +91,8 @@ public class MainActivity extends Activity {
 
                 // in onCreate or any event where your want the user to
                 // select a file
-            	Toast.makeText(getApplicationContext(), "Running...", Toast.LENGTH_SHORT).show();
+            	//Toast.makeText(getApplicationContext(), "Running...", Toast.LENGTH_SHORT).show();
+            	extractFeatures();
             }
         });
     }
@@ -167,6 +182,13 @@ public class MainActivity extends Activity {
             	
             	Uri selectedImageUri = data.getData();
             	
+            	try {
+					Bitmap bmp = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImageUri));
+					im2extr.add(bmp);
+				} catch (FileNotFoundException e) {
+					Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+				}
+            	
      	        //imagesPath.add(getPath(selectedImageUri));
      	        selectedImagePath = getPath(selectedImageUri);
      	        TextView myTextView = (TextView) findViewById(R.id.textView2);
@@ -178,7 +200,22 @@ public class MainActivity extends Activity {
     }
 	
 	private void extractFeatures() {
-		Config config = new Config(this);
+		FeatureExtractorAbstraction fea = new FeatureExtractorAbstraction();
+		Map<String,List<List<IFeature>>> result = null;
+		try {
+			result = fea.extractFeatures(FeatureExtractorAbstraction.REGISTRATION, this.im2extr, "Pippo", 0, 1);
+			Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_SHORT).show();
+			Log.d("MainActivity", result.toString());
+			
+		} catch (InvalidActionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RuntimeException e) {
+			Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+			Log.d("MainActivity", e.toString());
+		}
+		
+		
 		
 	}
 	
