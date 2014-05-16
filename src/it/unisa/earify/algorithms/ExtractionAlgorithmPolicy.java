@@ -1,4 +1,4 @@
-package it.unisa.earify.extractor;
+package it.unisa.earify.algorithms;
 
 import it.unisa.earify.config.Config;
 

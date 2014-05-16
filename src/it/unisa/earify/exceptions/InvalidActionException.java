@@ -1,4 +1,4 @@
-package it.unisa.earify.extractor.exceptions;
+package it.unisa.earify.exceptions;
 
 public class InvalidActionException extends Exception {
 	public InvalidActionException(int pAction) {

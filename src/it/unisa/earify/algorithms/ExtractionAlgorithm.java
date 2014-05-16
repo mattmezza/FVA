@@ -8,4 +8,6 @@ public interface ExtractionAlgorithm {
 
 	public List<IFeature> calculate(Bitmap image);
 	
+	public String getName();
+	
 }

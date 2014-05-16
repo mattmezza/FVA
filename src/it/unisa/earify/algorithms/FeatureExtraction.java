@@ -1,6 +1,7 @@
-package it.unisa.earify.extractor;
+package it.unisa.earify.algorithms;
 
-import it.unisa.earify.algorithms.ExtractionAlgorithm;
+import it.unisa.earify.algorithms.lbp.LBP;
+import it.unisa.earify.algorithms.sift.SIFT;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,11 +19,11 @@ public class FeatureExtraction {
 		for (Iterator i = algs.iterator(); i.hasNext();) {
 			String string = (String) i.next();
 			if (string.equals(ExtractionAlgorithmPolicy.LBP)) {
-				//FeatureExtraction fe = new LBPExtractor();
-				//feSet.add(fe);
+				ExtractionAlgorithm ea = LBP.getInstance();
+				feSet.add(ea);
 			} else if (string.equals(ExtractionAlgorithmPolicy.SIFT)) {
-				//FeatureExtraction fe = new SIFTExtractor();
-				//feSet.add(fe);
+				ExtractionAlgorithm ea = SIFT.getInstance();
+				feSet.add(ea);
 			}
 		}
 		return feSet;

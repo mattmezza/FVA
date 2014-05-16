@@ -9,10 +9,17 @@ import android.graphics.Bitmap;
 
 public class NativeLBP implements ExtractionAlgorithm {
 
+	public static final String NAME = "LBP";
+	
 	@Override
 	public List<IFeature> calculate(Bitmap image) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return NativeLBP.NAME;
 	}
 
 }
