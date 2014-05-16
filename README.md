@@ -1,6 +1,7 @@
 Progetto FVA: Earify
 ========
 #### Gruppo 2
+[Vai al wiki](https://github.com/mattmezza/FVA/wiki 'Vai al wiki')
 ###### Matteo Merola, Carlo Branca, Simone Scalabrino
 
 ### MODULO DI ESTRAZIONE DELLE CARATTERISTICHE DELL’ORECCHIO
