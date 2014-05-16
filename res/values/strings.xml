@@ -17,5 +17,6 @@
     <string name="verify_btn">Verify</string>
     <string name="recognition_btn">Recognize</string>
     <string name="go_btn">Go!</string>
+    <string name="title_activity_browse">BrowseActivity</string>
 
 </resources>

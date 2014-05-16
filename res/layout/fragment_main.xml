@@ -19,46 +19,66 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/red" />
 
-    <EditText
-        android:id="@+id/username_tv"
+    <RadioGroup
+        android:id="@+id/radioGroup1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/select_images"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="34dp"
-        android:ems="10"
-        android:hint="@string/username_ph" >
+        android:orientation="horizontal" >
 
-        <requestFocus />
-    </EditText>
+        <RadioButton
+            android:id="@+id/ear_sx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="sx" />
+
+        <RadioButton
+            android:id="@+id/ear_dx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dx" />
+    </RadioGroup>
 
     <Button
-        android:id="@+id/select_pictures_button"
+        android:id="@+id/go_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/username_tv"
+        android:layout_below="@+id/radioGroup1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
-        android:text="@string/select_pictures" />
+        android:layout_marginTop="26dp"
+        android:text="@string/go_btn" />
 
     <EditText
         android:id="@+id/fake_quality"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/username_tv"
-        android:layout_below="@+id/select_pictures_button"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/fake_quality_ph"
-        android:inputType="numberDecimal" />
+        android:inputType="numberDecimal" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/username_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fake_quality"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="@string/username_ph" />
 
     <RadioGroup
         android:id="@+id/action_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fake_quality"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp" >
+        android:layout_below="@+id/username_tv"
+        android:layout_centerHorizontal="true" >
 
         <RadioButton
             android:id="@+id/register_radio"
@@ -81,12 +101,21 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/go_btn"
+        android:id="@+id/select_images"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/action_group"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="42dp"
-        android:text="@string/go_btn" />
+        android:layout_marginTop="16dp"
+        android:text="@string/select_pictures" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/go_btn"
+        android:layout_marginTop="22dp"
+        android:layout_toLeftOf="@+id/select_images"
+        android:text="TextView" />
 
 </RelativeLayout>

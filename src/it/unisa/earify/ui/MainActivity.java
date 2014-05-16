@@ -2,9 +2,6 @@ package it.unisa.earify.ui;
 
 import it.unisa.earify.R;
 import it.unisa.earify.config.Config;
-import it.unisa.earify.extractor.FeatureExtractorAbstraction;
-import it.unisa.earify.extractor.FeaturesExtractor;
-import it.unisa.earify.extractor.IFeatureExtractor;
 
 import java.util.ArrayList;
 
@@ -24,40 +21,86 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	
+	private String selectedImagePath;
+	private int ear_code; /* dx = 0, sx = 1 */
+	private ArrayList<String> imagesPath;
+	private static final int SELECT_PICTURE = 4;
+	int selectedImages = 0;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		PlaceholderFragment fragment = new PlaceholderFragment();
-		
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, fragment).commit();
-		}
-		
-		((Button) fragment.getView().findViewById(R.id.select_pictures_button))
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_main);
+        
+        this.imagesPath = new ArrayList<String>();        
+        
+        ((Button) findViewById(R.id.select_images))
+                .setOnClickListener(new OnClickListener() {
+
+                    public void onClick(View arg0) {
+                    	
+                        // in onCreate or any event where your want the user to
+                        // select a file
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent,
+                                "Select Picture"), SELECT_PICTURE);
+                    }
+         });
+        
+/*        ((Button) findViewById(R.id.ear_sx))
+        .setOnClickListener(new OnClickListener() {
+            public void onClick(View arg0) {
+            
+            	Toast.makeText(getApplicationContext(), "Sx ear selected", Toast.LENGTH_SHORT).show();            	
+            }
+        });
+        
+        ((Button) findViewById(R.id.ear_dx))
+        .setOnClickListener(new OnClickListener() {
+            public void onClick(View arg0) {
+            	Toast.makeText(getApplicationContext(), "Sx ear selected", Toast.LENGTH_SHORT).show();            	
+            }
+        });
+*/
+        
+        ((Button) findViewById(R.id.go_btn))
         .setOnClickListener(new OnClickListener() {
 
             public void onClick(View arg0) {
 
                 // in onCreate or any event where your want the user to
                 // select a file
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,
-                        "Select Picture"), SELECT_PICTURE);
+            	Toast.makeText(getApplicationContext(), "Running...", Toast.LENGTH_SHORT).show();
             }
         });
-		
-		this.imagesPath = new ArrayList<String>();
-	}
+    }
+	
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+        
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.ear_dx:
+                if (checked)
+                    ear_code = 1;
+                break;
+            case R.id.ear_sx:
+                if (checked)
+                    ear_code = 0;
+                break;
+        }
+        
+        Toast.makeText(getApplicationContext(), ear_code, Toast.LENGTH_SHORT).show();
+    }
+    
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,26 +125,26 @@ public class MainActivity extends Activity {
      * helper to retrieve the path of an image URI
      */
     public String getPath(Uri uri) {
-            // just some safety built in 
-            if( uri == null ) {
-                // TODO perform some logging or show user feedback
-                return null;
-            }
-            // try to retrieve the image from the media store first
-            // this will only work for images selected from gallery
-            String[] projection = { MediaStore.Images.Media.DATA };
-            Cursor cursor = managedQuery(uri, projection, null, null, null);
-            if( cursor != null ){
-                int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                return cursor.getString(column_index);
-            }
-            // this is our fallback here
-            return uri.getPath();
-    }
+        // just some safety built in 
+        if( uri == null ) {
+            // TODO perform some logging or show user feedback
+            return null;
+        }
+        // try to retrieve the image from the media store first
+        // this will only work for images selected from gallery
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        if( cursor != null ){
+            int column_index = cursor
+            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        // this is our fallback here
+        return uri.getPath();
+}
 	
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+/*	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_PICTURE) {
             	if (Intent.ACTION_SEND_MULTIPLE.equals(true) && data.hasExtra(Intent.EXTRA_STREAM)) {
@@ -117,14 +160,28 @@ public class MainActivity extends Activity {
             }
         }
     }
+*/
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+            	
+            	Uri selectedImageUri = data.getData();
+            	
+     	        //imagesPath.add(getPath(selectedImageUri));
+     	        selectedImagePath = getPath(selectedImageUri);
+     	        TextView myTextView = (TextView) findViewById(R.id.textView2);
+     	        myTextView.setText(selectedImagePath);
+                //Toast.makeText(getApplicationContext(), selectedImagePath, Toast.LENGTH_SHORT).show();
+                
+            }
+        }
+    }
 	
 	private void extractFeatures() {
 		Config config = new Config(this);
 		
 	}
 	
-	private static final int SELECT_PICTURE = 1;
-	private ArrayList<String> imagesPath;
 
 	/**
 	 * A placeholder fragment containing a simple view.
@@ -143,5 +200,37 @@ public class MainActivity extends Activity {
 			return rootView;
 		}
 	}
+	
+	/*	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		PlaceholderFragment fragment = new PlaceholderFragment();
+		
+		if (savedInstanceState == null) {
+			getFragmentManager().beginTransaction()
+					.add(R.id.container, fragment).commit();
+		}
+		
+		((Button) fragment.getView().findViewById(R.id.select_images))
+        .setOnClickListener(new OnClickListener() {
+
+            public void onClick(View arg0) {
+
+                // in onCreate or any event where your want the user to
+                // select a file
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,
+                        "Select Picture"), SELECT_PICTURE);
+            }
+        });
+		
+		this.imagesPath = new ArrayList<String>();
+	}
+*/	
 
 }
