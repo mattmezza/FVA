@@ -1,6 +1,5 @@
 package it.unisa.earify.database.acquisitions;
 
-import it.unisa.earify.IFeatureExtractor;
 import it.unisa.earify.database.users.User;
 import it.unisa.earify.algorithms.IFeature;
 

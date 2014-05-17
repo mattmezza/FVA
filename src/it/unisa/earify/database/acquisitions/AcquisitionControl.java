@@ -47,9 +47,12 @@ public class AcquisitionControl {
 		ContentValues values = new ContentValues();
 		values.put(TableAcquisitions.COLUMN_ALGORITHM, pAcquisition.getAlgorithm());
 		values.put(TableAcquisitions.COLUMN_USER, pAcquisition.getUser().getId());
-		this.registerFeatures(pAcquisition, pAcquisition.getFeatures());
+		values.put(TableAcquisitions.COLUMN_EAR, pAcquisition.getEar());
 		
-		db.insert(TableAcquisitions.TABLE_ACQUISITIONS, null, values);
+		long newId = db.insert(TableAcquisitions.TABLE_ACQUISITIONS, null, values);
+		pAcquisition.setId((int)newId);
+		
+		this.registerFeatures(pAcquisition, pAcquisition.getFeatures(), db);
 		db.close();
 	}
 	
@@ -63,19 +66,20 @@ public class AcquisitionControl {
 	public List<Acquisition> getAcquisitions(User pUser, int pEar) {
 		SQLiteDatabase db = EarifyDatabaseHelper.getInstance().getReadableDatabase();
 		
-		String query = "SELECT A." + TableAcquisitions.COLUMN_ALGORITHM + ", A." + TableAcquisitions.COLUMN_ID + " " +
-					   "FROM " + TableAcquisitions.TABLE_ACQUISITIONS + " as A, " + TableUsers.TABLE_USERS + " as U " +
+		String query = "SELECT A." + TableAcquisitions.COLUMN_ALGORITHM + ", A." + TableAcquisitions.COLUMN_ID + ", A." + TableAcquisitions.COLUMN_EAR + " " +
+					   "FROM " + TableAcquisitions.TABLE_ACQUISITIONS + " A INNER JOIN " + TableUsers.TABLE_USERS + " U " +
+					   "ON U." + TableUsers.COLUMN_ID + " = A." + TableAcquisitions.COLUMN_USER + " " +
 					   "WHERE " +
-					   		"U." + TableUsers.COLUMN_ID + " = A." + TableAcquisitions.COLUMN_USER + " AND " +
-					   		"U." + TableUsers.COLUMN_USERNAME + " = ? AND " +
-					   		"A." + TableAcquisitions.COLUMN_EAR + " = ?";
+					   		"U." + TableUsers.COLUMN_ID + " = " + pUser.getId() + " AND " +
+					   		"A." + TableAcquisitions.COLUMN_EAR + " = " + pEar;
 		
-		Cursor cursor = db.rawQuery(query, new String[] {pUser.getUsername(), String.valueOf(pEar)});
+		Cursor cursor = db.rawQuery(query, new String[] {});
 		
 		
 	    if (cursor == null)
 	    	return null;
-	    if (!cursor.moveToFirst())
+	    boolean a = cursor.moveToFirst();
+	    if (!a)
 			return null;
 	    
 	    List<Acquisition> acquisitions = new ArrayList<Acquisition>();
@@ -86,6 +90,7 @@ public class AcquisitionControl {
 		    acquisition.setAlgorithm(cursor.getString(0));
 		    acquisition.setUser(pUser);
 		    acquisition.setFeatures(this.getFeatures(acquisition));
+		    acquisition.setEar(cursor.getInt(2));
 		    acquisitions.add(acquisition);
 	    } while (cursor.moveToNext());
 	    
@@ -113,18 +118,15 @@ public class AcquisitionControl {
 	/*
 	 * Registra le feature specificate
 	 */
-	private void registerFeatures(Acquisition pAcquisition, List<IFeature> pFeatures) {
-		SQLiteDatabase db = EarifyDatabaseHelper.getInstance().getWritableDatabase();
-		
+	private void registerFeatures(Acquisition pAcquisition, List<IFeature> pFeatures, SQLiteDatabase pDb) {
 		for (IFeature feature : pFeatures) {
 			ContentValues values = new ContentValues();
 			values.put(TableFeatures.COLUMN_ACQUISITION, pAcquisition.getId());
 			values.put(TableFeatures.COLUMN_DATA, getSerializated(feature));
 			
 			
-			db.insert(TableFeatures.TABLE_FEATURES, null, values);
+			pDb.insert(TableFeatures.TABLE_FEATURES, null, values);
 		}
-		db.close();
 	}
 	
 	/*
@@ -135,8 +137,8 @@ public class AcquisitionControl {
 		
 		Cursor cursor = db.query(TableFeatures.TABLE_FEATURES, 
 								new String[] {TableFeatures.COLUMN_ID, TableFeatures.COLUMN_DATA},  
-								TableFeatures.COLUMN_ACQUISITION + "= ?", 
-								new String[] {String.valueOf(pAcquisition.getId())}, 
+								TableFeatures.COLUMN_ACQUISITION + "= " + pAcquisition.getId(), 
+								new String[] {}, 
 								null, null, null);
 		
 		if (cursor == null)

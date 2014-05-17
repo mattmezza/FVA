@@ -7,7 +7,6 @@ package it.unisa.earify.database.users;
 public class User {
 	private int id;
 	private String username;
-	private int ear;
 	
 	/**
 	 * Restituisce l'identificativo dell'utente
