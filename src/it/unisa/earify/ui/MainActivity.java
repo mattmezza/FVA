@@ -31,7 +31,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-//import android.widget.RadioGroup;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,9 +39,9 @@ public class MainActivity extends Activity {
 	
 	private String selectedImagePath;
 	private String pUsername;
-	//private int pEarCode;
-	//private int pQuality;
-	private static final int QUALITY = 1;
+	private int pEarCode;
+	private int pQuality;
+	//private static final int QUALITY = 1;
 	private static final int SELECT_PICTURE = 4;
 	
 	private List<Bitmap> im2extr = new ArrayList<Bitmap>();
@@ -94,15 +94,15 @@ public class MainActivity extends Activity {
             public void onClick(View arg0) {
 
             	//otteniamo il codice qualità, che per per default è 1.
-            	//EditText editQuality = (EditText) findViewById(R.id.fake_quality);
-                //pQuality = Integer.parseInt(editQuality.getText().toString());
+            	EditText editQuality = (EditText) findViewById(R.id.fake_quality);
+                pQuality = Integer.parseInt(editQuality.getText().toString());
 
             	//otteniamo il nome dell'utente.
             	EditText editUsr = (EditText) findViewById(R.id.username_tv);
                 pUsername = editUsr.getText().toString();
                 
                 //otteniamo l'id del radio button, dx corrisponde al valore intero 0, sx corrisponde al valore intero 1.
-            	//pEarCode = ((RadioGroup)findViewById( R.id.radio_earcode )).getCheckedRadioButtonId();
+            	pEarCode = ((RadioGroup)findViewById( R.id.radio_earcode )).getCheckedRadioButtonId();
                 
             	//extrazione delle feature
             	extractFeatures();
@@ -199,7 +199,7 @@ public class MainActivity extends Activity {
 		FeatureExtractorAbstraction fea = new FeatureExtractorAbstraction();
 		Map<String,List<List<IFeature>>> result = null;
 		try {
-			result = fea.extractFeatures(FeatureExtractorAbstraction.REGISTRATION, this.im2extr, this.pUsername, 0, QUALITY);
+			result = fea.extractFeatures(FeatureExtractorAbstraction.REGISTRATION, this.im2extr, this.pUsername, this.pEarCode, this.pQuality);
 			Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_SHORT).show();
 			Log.d("MainActivity", result.toString());
 			
