@@ -18,5 +18,8 @@
     <string name="recognition_btn">Recognize</string>
     <string name="go_btn">Go!</string>
     <string name="title_activity_browse">BrowseActivity</string>
+    <string name="radio_sx">sx</string>
+    <string name="radio_dx">dx</string>
+    <string name="quality_value">1</string>
 
 </resources>

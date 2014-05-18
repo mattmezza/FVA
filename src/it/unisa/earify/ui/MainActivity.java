@@ -20,7 +20,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,24 +30,44 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RadioButton;
+import android.widget.EditText;
+//import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
 	private String selectedImagePath;
-	private int ear_code; /* dx = 0, sx = 1 */
-	private ArrayList<String> imagesPath;
+	private String pUsername;
+	//private int pEarCode;
+	//private int pQuality;
+	private static final int QUALITY = 1;
 	private static final int SELECT_PICTURE = 4;
-	int selectedImages = 0;
+	
 	private List<Bitmap> im2extr = new ArrayList<Bitmap>();
+	
+	/**
+	 * A placeholder fragment containing a simple view.
+	 */
+	public static class PlaceholderFragment extends Fragment {
+
+		public PlaceholderFragment() {
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_main, container,
+					false);
+			
+			return rootView;
+		}
+	}
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_main);
         
-        this.imagesPath = new ArrayList<String>();        
         
         ((Button) findViewById(R.id.select_images))
                 .setOnClickListener(new OnClickListener() {
@@ -68,55 +87,31 @@ public class MainActivity extends Activity {
         Config.setContext(this);
         EarifyDatabaseHelper.init(this);
         
-/*        ((Button) findViewById(R.id.ear_sx))
-        .setOnClickListener(new OnClickListener() {
-            public void onClick(View arg0) {
-            
-            	Toast.makeText(getApplicationContext(), "Sx ear selected", Toast.LENGTH_SHORT).show();            	
-            }
-        });
-        
-        ((Button) findViewById(R.id.ear_dx))
-        .setOnClickListener(new OnClickListener() {
-            public void onClick(View arg0) {
-            	Toast.makeText(getApplicationContext(), "Sx ear selected", Toast.LENGTH_SHORT).show();            	
-            }
-        });
-*/
-        
+      
         ((Button) findViewById(R.id.go_btn))
         .setOnClickListener(new OnClickListener() {
 
             public void onClick(View arg0) {
 
-                // in onCreate or any event where your want the user to
-                // select a file
-            	//Toast.makeText(getApplicationContext(), "Running...", Toast.LENGTH_SHORT).show();
+            	//otteniamo il codice qualità, che per per default è 1.
+            	//EditText editQuality = (EditText) findViewById(R.id.fake_quality);
+                //pQuality = Integer.parseInt(editQuality.getText().toString());
+
+            	//otteniamo il nome dell'utente.
+            	EditText editUsr = (EditText) findViewById(R.id.username_tv);
+                pUsername = editUsr.getText().toString();
+                
+                //otteniamo l'id del radio button, dx corrisponde al valore intero 0, sx corrisponde al valore intero 1.
+            	//pEarCode = ((RadioGroup)findViewById( R.id.radio_earcode )).getCheckedRadioButtonId();
+                
+            	//extrazione delle feature
             	extractFeatures();
+            	
+            	//Toast.makeText(getApplicationContext(), "Running...", Toast.LENGTH_SHORT).show();
             }
         });
     }
 	
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-        
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.ear_dx:
-                if (checked)
-                    ear_code = 1;
-                break;
-            case R.id.ear_sx:
-                if (checked)
-                    ear_code = 0;
-                break;
-        }
-        
-        Toast.makeText(getApplicationContext(), ear_code, Toast.LENGTH_SHORT).show();
-    }
-    
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -148,7 +143,8 @@ public class MainActivity extends Activity {
         // try to retrieve the image from the media store first
         // this will only work for images selected from gallery
         String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        @SuppressWarnings("deprecation")
+		Cursor cursor = managedQuery(uri, projection, null, null, null);
         if( cursor != null ){
             int column_index = cursor
             .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -203,7 +199,7 @@ public class MainActivity extends Activity {
 		FeatureExtractorAbstraction fea = new FeatureExtractorAbstraction();
 		Map<String,List<List<IFeature>>> result = null;
 		try {
-			result = fea.extractFeatures(FeatureExtractorAbstraction.REGISTRATION, this.im2extr, "Pippo", 0, 1);
+			result = fea.extractFeatures(FeatureExtractorAbstraction.REGISTRATION, this.im2extr, this.pUsername, 0, QUALITY);
 			Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_SHORT).show();
 			Log.d("MainActivity", result.toString());
 			
@@ -214,60 +210,7 @@ public class MainActivity extends Activity {
 			Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
 			Log.d("MainActivity", e.toString());
 		}
-		
-		
-		
+	
 	}
 	
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
-			
-			return rootView;
-		}
-	}
-	
-	/*	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		PlaceholderFragment fragment = new PlaceholderFragment();
-		
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, fragment).commit();
-		}
-		
-		((Button) fragment.getView().findViewById(R.id.select_images))
-        .setOnClickListener(new OnClickListener() {
-
-            public void onClick(View arg0) {
-
-                // in onCreate or any event where your want the user to
-                // select a file
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,
-                        "Select Picture"), SELECT_PICTURE);
-            }
-        });
-		
-		this.imagesPath = new ArrayList<String>();
-	}
-*/	
-
 }
