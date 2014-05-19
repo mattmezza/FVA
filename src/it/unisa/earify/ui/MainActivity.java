@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
 	
 	private String selectedImagePath;
 	private String pUsername;
+	private int pActionCode;
 	private int pEarCode;
 	private int pQuality;
 	//private static final int QUALITY = 1;
@@ -100,6 +101,9 @@ public class MainActivity extends Activity {
             	//otteniamo il nome dell'utente.
             	EditText editUsr = (EditText) findViewById(R.id.username_tv);
                 pUsername = editUsr.getText().toString();
+                
+                //otteniamo l'id del radio button, dx corrisponde al valore intero 0, sx corrisponde al valore intero 1.
+            	pActionCode = ((RadioGroup)findViewById( R.id.action_group )).getCheckedRadioButtonId();
                 
                 //otteniamo l'id del radio button, dx corrisponde al valore intero 0, sx corrisponde al valore intero 1.
             	pEarCode = ((RadioGroup)findViewById( R.id.radio_earcode )).getCheckedRadioButtonId();
@@ -194,12 +198,21 @@ public class MainActivity extends Activity {
             }
         }
     }
+    
+    private int getAction(int pActionCode){
+    	if (pActionCode == 0){
+    		return FeatureExtractorAbstraction.REGISTRATION;
+    	} else if (pActionCode == 1) {
+    		return FeatureExtractorAbstraction.VERIFICATION;
+    	} else { 
+    		return FeatureExtractorAbstraction.RECOGNITION; } 
+    }
 	
 	private void extractFeatures() {
 		FeatureExtractorAbstraction fea = new FeatureExtractorAbstraction();
 		Map<String,List<List<IFeature>>> result = null;
 		try {
-			result = fea.extractFeatures(FeatureExtractorAbstraction.REGISTRATION, this.im2extr, this.pUsername, this.pEarCode, this.pQuality);
+			result = fea.extractFeatures(getAction(pActionCode), this.im2extr, this.pUsername, this.pEarCode, this.pQuality);
 			Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_SHORT).show();
 			Log.d("MainActivity", result.toString());
 			
