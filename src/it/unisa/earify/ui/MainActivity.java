@@ -5,6 +5,9 @@ import it.unisa.earify.R;
 import it.unisa.earify.algorithms.IFeature;
 import it.unisa.earify.config.Config;
 import it.unisa.earify.database.EarifyDatabaseHelper;
+import it.unisa.earify.database.acquisitions.Acquisition;
+import it.unisa.earify.database.acquisitions.AcquisitionControl;
+import it.unisa.earify.database.users.UsersControl;
 import it.unisa.earify.exceptions.InvalidActionException;
 
 import java.io.FileNotFoundException;
@@ -38,10 +41,10 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	
 	private String selectedImagePath;
-	private String pUsername;
-	private int pActionCode;
-	private int pEarCode;
-	private int pQuality;
+	private String username;
+	private int actionCodeId;
+	private int earCodeId;
+	private int quality;
 	//private static final int QUALITY = 1;
 	private static final int SELECT_PICTURE = 4;
 	
@@ -94,19 +97,19 @@ public class MainActivity extends Activity {
 
             public void onClick(View arg0) {
 
-            	//otteniamo il codice qualità, che per per default è 1.
+            	//otteniamo il codice qualitï¿½, che per per default ï¿½ 1.
             	EditText editQuality = (EditText) findViewById(R.id.fake_quality);
-                pQuality = Integer.parseInt(editQuality.getText().toString());
+                quality = Integer.parseInt(editQuality.getText().toString());
 
             	//otteniamo il nome dell'utente.
             	EditText editUsr = (EditText) findViewById(R.id.username_tv);
-                pUsername = editUsr.getText().toString();
+                username = editUsr.getText().toString();
                 
                 //otteniamo l'id del radio button, dx corrisponde al valore intero 0, sx corrisponde al valore intero 1.
-            	pActionCode = ((RadioGroup)findViewById( R.id.action_group )).getCheckedRadioButtonId();
+            	actionCodeId = ((RadioGroup)findViewById( R.id.action_group )).getCheckedRadioButtonId();
                 
                 //otteniamo l'id del radio button, dx corrisponde al valore intero 0, sx corrisponde al valore intero 1.
-            	pEarCode = ((RadioGroup)findViewById( R.id.radio_earcode )).getCheckedRadioButtonId();
+            	earCodeId = ((RadioGroup)findViewById( R.id.radio_earcode )).getCheckedRadioButtonId();
                 
             	//extrazione delle feature
             	extractFeatures();
@@ -200,19 +203,30 @@ public class MainActivity extends Activity {
     }
     
     private int getAction(int pActionCode){
-    	if (pActionCode == 0){
+    	if (pActionCode == R.id.register_radio){
     		return FeatureExtractorAbstraction.REGISTRATION;
-    	} else if (pActionCode == 1) {
+    	} else if (pActionCode == R.id.verify_radio) {
     		return FeatureExtractorAbstraction.VERIFICATION;
-    	} else { 
-    		return FeatureExtractorAbstraction.RECOGNITION; } 
+    	} else if (pActionCode == R.id.recognition_radio) { 
+    		return FeatureExtractorAbstraction.RECOGNITION; 
+    	} else
+    		return -1;
+    }
+    
+    private int getEar(int pEarCode) {
+    	if (pEarCode == R.id.ear_sx)
+    		return FeatureExtractorAbstraction.EAR_LEFT;
+    	else if (pEarCode == R.id.ear_dx)
+    		return FeatureExtractorAbstraction.EAR_RIGHT;
+    	else
+    		return -1;
     }
 	
 	private void extractFeatures() {
 		FeatureExtractorAbstraction fea = new FeatureExtractorAbstraction();
 		Map<String,List<List<IFeature>>> result = null;
 		try {
-			result = fea.extractFeatures(getAction(pActionCode), this.im2extr, this.pUsername, this.pEarCode, this.pQuality);
+			result = fea.extractFeatures(getAction(actionCodeId), this.im2extr, this.username, getEar(this.earCodeId), this.quality);
 			Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_SHORT).show();
 			Log.d("MainActivity", result.toString());
 			
@@ -224,6 +238,17 @@ public class MainActivity extends Activity {
 			Log.d("MainActivity", e.toString());
 		}
 	
+	}
+	
+	private void read() {
+		try {
+			List<Acquisition> as = AcquisitionControl.getInstance().getAcquisitions(UsersControl.getInstance().getUser("mm"), getEar(this.earCodeId));
+			for (Acquisition a : as) {
+				Log.d("Feature", a.toString());
+			}
+		} catch (RuntimeException e) {
+			Log.d("ERROR", e.toString());
+		}
 	}
 	
 }

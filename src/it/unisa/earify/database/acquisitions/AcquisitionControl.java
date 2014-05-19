@@ -18,6 +18,7 @@ import it.unisa.earify.database.users.User;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 /**
  * Controlla la persistenza delle acquisizioni nel database.
@@ -149,7 +150,8 @@ public class AcquisitionControl {
 		List<IFeature> features = new ArrayList<IFeature>();
 		do {
 			try {
-				Object deserialized = this.getDeserialized(cursor.getBlob(1));
+				byte[] blob = cursor.getBlob(1);
+				Object deserialized = this.getDeserialized(blob);
 				if (deserialized != null && deserialized instanceof IFeature) {
 					IFeature feature = (IFeature)deserialized;
 					features.add(feature);
@@ -196,8 +198,11 @@ public class AcquisitionControl {
 	        oos.writeObject(pObject);
 	        oos.close();
 	        
+	        Log.d("DEBUG", baos.toString());
+	        
 	        return baos.toByteArray();
 		} catch (IOException e) {
+			Log.d("DEBUG ERROR", e.toString());
 			return new byte[] {};
 		}
 	}
