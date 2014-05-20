@@ -18,6 +18,8 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -72,7 +74,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 			return rootView;
 		}
 	}
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main);
@@ -193,8 +195,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 				}
 				selectedImagePath = getPath(selectedImageUri);
 				TextView myTextView = (TextView) findViewById(R.id.textView2);
-				myTextView.setText(selectedImagePath);
-
+				myTextView.append("\n"+selectedImagePath);
 			}
 		}
 	}
@@ -220,10 +221,13 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	}
 
 	private void extractFeatures() {
-		progressDialog = ProgressDialog.show(this, "Processing...", "Please wait while your images are being processed...", true);
+		progressDialog = ProgressDialog.show(this, "Processing...",
+				"Please wait while your images are being processed...", true);
 		progressDialog.setCancelable(false);
 		progressDialog.show();
-		FeatureExtractorTask task = new FeatureExtractorTask(getAction(actionCodeId), this.im2extr, this.username, getEar(this.earCodeId), this.quality);
+		FeatureExtractorTask task = new FeatureExtractorTask(
+				getAction(actionCodeId), this.im2extr, this.username,
+				getEar(this.earCodeId), this.quality);
 		task.setDelegate(this);
 		task.execute("");
 	}
@@ -243,36 +247,48 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 
 	@Override
 	public void onExtractorFinished(Map<String, List<List<IFeature>>> result) {
-		Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_LONG).show();
-		if(result!=null)
+		Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_LONG)
+				.show();
+		if (result != null)
 			Log.d("MainActivity", result.toString());
-		progressDialog.dismiss();
-		final AlertDialog ad = new AlertDialog.Builder(getApplicationContext()).create();
-		ad.setTitle("Wowowowow");
-		ad.setMessage("Estrazione terminata con successo!");
-		ad.setButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				ad.dismiss();
-			}
-		});
+		progressDialog.cancel();
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setTitle("Wowowow");
+		alertDialogBuilder
+				.setMessage(
+						"The features for selected images have been extracted successfully!").setCancelable(false)
+				.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				});
+		AlertDialog ad = alertDialogBuilder.create();
 		ad.show();
 	}
 
 	@Override
 	public void onExtractorError(Exception e) {
-		Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG)
+				.show();
 		Log.d("MainActivity", e.toString());
-		progressDialog.dismiss();
-		final AlertDialog ad = new AlertDialog.Builder(getApplicationContext()).create();
-		ad.setTitle("Ooops");
-		ad.setMessage("Errore durante l'estrazione delle caratteristiche!\n"+e.toString());
-		ad.setButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				ad.dismiss();
-			}
-		});
+		progressDialog.cancel();
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setTitle("Oops");
+		alertDialogBuilder
+				.setMessage(
+						"Errore durante l'estrazione delle caratteristiche!\n"
+								+ e.toString()).setCancelable(false)
+				.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				});
+		AlertDialog ad = alertDialogBuilder.create();
 		ad.show();
 	}
+
 }
