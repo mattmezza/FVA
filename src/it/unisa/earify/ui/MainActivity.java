@@ -5,6 +5,7 @@ import it.unisa.earify.FeatureExtractorAbstraction;
 import it.unisa.earify.FeatureExtractorTask;
 import it.unisa.earify.R;
 import it.unisa.earify.algorithms.IFeature;
+import it.unisa.earify.algorithms.Image;
 import it.unisa.earify.config.Config;
 import it.unisa.earify.database.EarifyDatabaseHelper;
 import it.unisa.earify.database.acquisitions.Acquisition;
@@ -55,7 +56,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	// private static final int QUALITY = 1;
 	private static final int SELECT_PICTURE = 4;
 
-	private List<Bitmap> im2extr = new ArrayList<Bitmap>();
+	private List<Image> im2extr = new ArrayList<Image>();
 
 	/**
 	 * A placeholder fragment containing a simple view.
@@ -177,7 +178,11 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 					Bitmap bmp = BitmapFactory
 							.decodeStream(getContentResolver().openInputStream(
 									selectedImageUri));
-					im2extr.add(bmp);
+					Image image = new Image();
+					image.setBitmap(bmp);
+					image.setPath(selectedImagePath.toString());
+					
+					im2extr.add(image);
 				} catch (FileNotFoundException e) {
 					Toast.makeText(getApplicationContext(), e.toString(),
 							Toast.LENGTH_SHORT).show();

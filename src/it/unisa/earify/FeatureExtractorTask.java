@@ -1,6 +1,7 @@
 package it.unisa.earify;
 
 import it.unisa.earify.algorithms.IFeature;
+import it.unisa.earify.algorithms.Image;
 import it.unisa.earify.exceptions.InvalidActionException;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import android.os.AsyncTask;
 
 public class FeatureExtractorTask extends AsyncTask<String, Void, String> {
 
-	public FeatureExtractorTask(int pAction, List<Bitmap> pImages, String pUsername, int pEar, float pQuality) {
+	public FeatureExtractorTask(int pAction, List<Image> pImages, String pUsername, int pEar, float pQuality) {
 		this.action = pAction;
 		this.images = pImages;
 		this.username = pUsername;
@@ -45,7 +46,7 @@ public class FeatureExtractorTask extends AsyncTask<String, Void, String> {
 	private ExtractorDelegate delegate;
 	
 	private int action;
-	private List<Bitmap> images;
+	private List<Image> images;
 	private String username;
 	private int ear;
 	private float quality;

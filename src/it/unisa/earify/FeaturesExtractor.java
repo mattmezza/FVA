@@ -3,6 +3,7 @@ package it.unisa.earify;
 import it.unisa.earify.algorithms.ExtractionAlgorithm;
 import it.unisa.earify.algorithms.FeatureExtraction;
 import it.unisa.earify.algorithms.IFeature;
+import it.unisa.earify.algorithms.Image;
 import it.unisa.earify.database.acquisitions.Acquisition;
 import it.unisa.earify.database.acquisitions.AcquisitionControl;
 import it.unisa.earify.database.exceptions.AlreadyRegisteredUserException;
@@ -20,13 +21,12 @@ import org.opencv.android.OpenCVLoader;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 
 public class FeaturesExtractor implements IFeatureExtractor {
 	// private static final String DATABASE_PATH = "data.db";
 
 	@Override
-	public void register(List<Bitmap> pImages, String pUsername, int pEar,
+	public void register(List<Image> pImages, String pUsername, int pEar,
 			float pQuality) {
 
 		try {
@@ -56,7 +56,7 @@ public class FeaturesExtractor implements IFeatureExtractor {
 
 	@Override
 	public Map<String, List<List<IFeature>>> extractFeature(
-			List<Bitmap> pImages, String pUsername, int pEar, float pQuality) {
+			List<Image> pImages, String pUsername, int pEar, float pQuality) {
 		FeatureExtraction context = new FeatureExtraction();
 		Set<ExtractionAlgorithm> algo = context
 				.getFeatureExtractionAlgorithms();
@@ -65,7 +65,7 @@ public class FeaturesExtractor implements IFeatureExtractor {
 		for (ExtractionAlgorithm extractionAlgorithm : algo) {
 			List<List<IFeature>> imFeatures = new ArrayList<List<IFeature>>();
 
-			for (Bitmap image : pImages) {
+			for (Image image : pImages) {
 				List<IFeature> features = extractionAlgorithm.calculate(image);
 				imFeatures.add(features);
 			}

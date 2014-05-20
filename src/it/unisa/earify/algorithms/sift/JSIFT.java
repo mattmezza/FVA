@@ -2,6 +2,7 @@ package it.unisa.earify.algorithms.sift;
 
 import it.unisa.earify.algorithms.ExtractionAlgorithm;
 import it.unisa.earify.algorithms.IFeature;
+import it.unisa.earify.algorithms.Image;
 import it.unisa.earify.util.AndroidImageConverter;
 
 import java.util.ArrayList;
@@ -16,7 +17,9 @@ public class JSIFT implements ExtractionAlgorithm {
 	public static final String NAME = "SIFT";
 	
 	@Override
-	public List<IFeature> calculate(Bitmap image) {
+	public List<IFeature> calculate(Image pImage) {
+		Bitmap image = pImage.getBitmap();
+		
 		AndroidImageConverter converter = new AndroidImageConverter(image);
 		// convert bitmap to pixels table
 		int pixels[] = converter.getPixelTab();
