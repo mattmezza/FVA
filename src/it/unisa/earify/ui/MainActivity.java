@@ -39,17 +39,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	
+
 	private String selectedImagePath;
 	private String username;
 	private int actionCodeId;
 	private int earCodeId;
 	private int quality;
-	//private static final int QUALITY = 1;
+	// private static final int QUALITY = 1;
 	private static final int SELECT_PICTURE = 4;
-	
+
 	private List<Bitmap> im2extr = new ArrayList<Bitmap>();
-	
+
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
@@ -63,62 +63,68 @@ public class MainActivity extends Activity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
-			
+
 			return rootView;
 		}
 	}
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_main);
-        
-        
-        ((Button) findViewById(R.id.select_images))
-                .setOnClickListener(new OnClickListener() {
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.fragment_main);
 
-                    public void onClick(View arg0) {
-                    	
-                        // in onCreate or any event where your want the user to
-                        // select a file
-                        Intent intent = new Intent();
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent,
-                                "Select Picture"), SELECT_PICTURE);
-                    }
-         });
-        
-        Config.setContext(this);
-        EarifyDatabaseHelper.init(this);
-        
-      
-        ((Button) findViewById(R.id.go_btn))
-        .setOnClickListener(new OnClickListener() {
+		Config.setContext(this);
 
-            public void onClick(View arg0) {
+		((Button) findViewById(R.id.select_images))
+				.setOnClickListener(new OnClickListener() {
 
-            	//otteniamo il codice qualit�, che per per default � 1.
-            	EditText editQuality = (EditText) findViewById(R.id.fake_quality);
-                quality = Integer.parseInt(editQuality.getText().toString());
+					public void onClick(View arg0) {
 
-            	//otteniamo il nome dell'utente.
-            	EditText editUsr = (EditText) findViewById(R.id.username_tv);
-                username = editUsr.getText().toString();
-                
-                //otteniamo l'id del radio button, dx corrisponde al valore intero 0, sx corrisponde al valore intero 1.
-            	actionCodeId = ((RadioGroup)findViewById( R.id.action_group )).getCheckedRadioButtonId();
-                
-                //otteniamo l'id del radio button, dx corrisponde al valore intero 0, sx corrisponde al valore intero 1.
-            	earCodeId = ((RadioGroup)findViewById( R.id.radio_earcode )).getCheckedRadioButtonId();
-                
-            	//extrazione delle feature
-            	extractFeatures();
-            	
-            	//Toast.makeText(getApplicationContext(), "Running...", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-	
+						// in onCreate or any event where your want the user to
+						// select a file
+						Intent intent = new Intent();
+						intent.setType("image/*");
+						intent.setAction(Intent.ACTION_GET_CONTENT);
+						startActivityForResult(
+								Intent.createChooser(intent, "Select Picture"),
+								SELECT_PICTURE);
+					}
+				});
+
+		EarifyDatabaseHelper.init(this);
+
+		((Button) findViewById(R.id.go_btn))
+				.setOnClickListener(new OnClickListener() {
+
+					public void onClick(View arg0) {
+
+						// otteniamo il codice qualita, che per per default
+						EditText editQuality = (EditText) findViewById(R.id.fake_quality);
+						quality = Integer.parseInt(editQuality.getText()
+								.toString());
+
+						// otteniamo il nome dell'utente.
+						EditText editUsr = (EditText) findViewById(R.id.username_tv);
+						username = editUsr.getText().toString();
+
+						// otteniamo l'id del radio button, dx corrisponde al
+						// valore intero 0, sx corrisponde al valore intero 1.
+						actionCodeId = ((RadioGroup) findViewById(R.id.action_group))
+								.getCheckedRadioButtonId();
+
+						// otteniamo l'id del radio button, dx corrisponde al
+						// valore intero 0, sx corrisponde al valore intero 1.
+						earCodeId = ((RadioGroup) findViewById(R.id.radio_earcode))
+								.getCheckedRadioButtonId();
+
+						// extrazione delle feature
+						extractFeatures();
+
+						// Toast.makeText(getApplicationContext(), "Running...",
+						// Toast.LENGTH_SHORT).show();
+					}
+				});
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -137,112 +143,102 @@ public class MainActivity extends Activity {
 		}
 		return false;
 	}
-	
-	/**
-     * helper to retrieve the path of an image URI
-     */
-    public String getPath(Uri uri) {
-        // just some safety built in 
-        if( uri == null ) {
-            // TODO perform some logging or show user feedback
-            return null;
-        }
-        // try to retrieve the image from the media store first
-        // this will only work for images selected from gallery
-        String[] projection = { MediaStore.Images.Media.DATA };
-        @SuppressWarnings("deprecation")
+
+	public String getPath(Uri uri) {
+		if (uri == null) {
+			return null;
+		}
+		String[] projection = { MediaStore.Images.Media.DATA };
+		@SuppressWarnings("deprecation")
 		Cursor cursor = managedQuery(uri, projection, null, null, null);
-        if( cursor != null ){
-            int column_index = cursor
-            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        }
-        // this is our fallback here
-        return uri.getPath();
-}
-	
-/*	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (cursor != null) {
+			int column_index = cursor
+					.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+			cursor.moveToFirst();
+			return cursor.getString(column_index);
+		}
+		return uri.getPath();
+	}
+
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_PICTURE) {
-            	if (Intent.ACTION_SEND_MULTIPLE.equals(true) && data.hasExtra(Intent.EXTRA_STREAM)) {
-    		    // retrieve a collection of selected images
-    		    ArrayList<Parcelable> list = data.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
-    		    
-    		    for (Parcelable parcel : list) {
-    		       Uri uri = (Uri) parcel;
-    		       Uri selectedImageUri = data.getData();
-	               this.imagesPath.add(getPath(selectedImageUri));
-    		   }
-    		}
-            }
-        }
-    }
-*/
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_PICTURE) {
-            	
-            	Uri selectedImageUri = data.getData();
-            	
-            	try {
-					Bitmap bmp = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImageUri));
+			if (requestCode == SELECT_PICTURE) {
+
+				Uri selectedImageUri = data.getData();
+
+				try {
+					Bitmap bmp = BitmapFactory
+							.decodeStream(getContentResolver().openInputStream(
+									selectedImageUri));
 					im2extr.add(bmp);
 				} catch (FileNotFoundException e) {
-					Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), e.toString(),
+							Toast.LENGTH_SHORT).show();
 				}
-            	
-     	        //imagesPath.add(getPath(selectedImageUri));
-     	        selectedImagePath = getPath(selectedImageUri);
-     	        TextView myTextView = (TextView) findViewById(R.id.textView2);
-     	        myTextView.setText(selectedImagePath);
-                //Toast.makeText(getApplicationContext(), selectedImagePath, Toast.LENGTH_SHORT).show();
-                
-            }
-        }
-    }
-    
-    private int getAction(int pActionCode){
-    	if (pActionCode == R.id.register_radio){
-    		return FeatureExtractorAbstraction.REGISTRATION;
-    	} else if (pActionCode == R.id.verify_radio) {
-    		return FeatureExtractorAbstraction.VERIFICATION;
-    	} else if (pActionCode == R.id.recognition_radio) { 
-    		return FeatureExtractorAbstraction.RECOGNITION; 
-    	} else
-    		return -1;
-    }
-    
-    private int getEar(int pEarCode) {
-    	if (pEarCode == R.id.ear_sx)
-    		return FeatureExtractorAbstraction.EAR_LEFT;
-    	else if (pEarCode == R.id.ear_dx)
-    		return FeatureExtractorAbstraction.EAR_RIGHT;
-    	else
-    		return -1;
-    }
-	
+
+				Config config = Config.getInstance();
+				int nofImages = config.numberOfImagesToUse();
+				TextView nofTextView = (TextView) findViewById(R.id.nofSelectedImages);
+				nofTextView.setText("Immagini selezionate: " + im2extr.size()
+						+ "/" + nofImages);
+
+				if (im2extr.size() >= nofImages) {
+					Button button = ((Button) findViewById(R.id.select_images));
+					button.setEnabled(false);
+				}
+				selectedImagePath = getPath(selectedImageUri);
+				TextView myTextView = (TextView) findViewById(R.id.textView2);
+				myTextView.setText(selectedImagePath);
+
+			}
+		}
+	}
+
+	private int getAction(int pActionCode) {
+		if (pActionCode == R.id.register_radio) {
+			return FeatureExtractorAbstraction.REGISTRATION;
+		} else if (pActionCode == R.id.verify_radio) {
+			return FeatureExtractorAbstraction.VERIFICATION;
+		} else if (pActionCode == R.id.recognition_radio) {
+			return FeatureExtractorAbstraction.RECOGNITION;
+		} else
+			return -1;
+	}
+
+	private int getEar(int pEarCode) {
+		if (pEarCode == R.id.ear_sx)
+			return FeatureExtractorAbstraction.EAR_LEFT;
+		else if (pEarCode == R.id.ear_dx)
+			return FeatureExtractorAbstraction.EAR_RIGHT;
+		else
+			return -1;
+	}
+
 	private void extractFeatures() {
 		FeatureExtractorAbstraction fea = new FeatureExtractorAbstraction();
-		Map<String,List<List<IFeature>>> result = null;
+		Map<String, List<List<IFeature>>> result = null;
 		try {
-			result = fea.extractFeatures(getAction(actionCodeId), this.im2extr, this.username, getEar(this.earCodeId), this.quality);
-			Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_SHORT).show();
+			result = fea.extractFeatures(getAction(actionCodeId), this.im2extr,
+					this.username, getEar(this.earCodeId), this.quality);
+			Toast.makeText(getApplicationContext(), "finito",
+					Toast.LENGTH_SHORT).show();
 			Log.d("MainActivity", result.toString());
-			
+
 		} catch (InvalidActionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (RuntimeException e) {
-			Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), e.toString(),
+					Toast.LENGTH_SHORT).show();
 			Log.d("MainActivity", e.toString());
 		}
-	
+
 	}
-	
+
 	private void read() {
 		try {
-			List<Acquisition> as = AcquisitionControl.getInstance().getAcquisitions(UsersControl.getInstance().getUser("mm"), getEar(this.earCodeId));
+			List<Acquisition> as = AcquisitionControl.getInstance()
+					.getAcquisitions(UsersControl.getInstance().getUser("mm"),
+							getEar(this.earCodeId));
 			for (Acquisition a : as) {
 				Log.d("Feature", a.toString());
 			}
@@ -250,5 +246,5 @@ public class MainActivity extends Activity {
 			Log.d("ERROR", e.toString());
 		}
 	}
-	
+
 }

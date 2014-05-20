@@ -104,13 +104,20 @@
         android:layout_marginTop="16dp"
         android:text="@string/select_pictures" />
 
-    <TextView
-        android:id="@+id/textView2"
+   	<TextView
+        android:id="@+id/nofSelectedImages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/go_btn"
         android:layout_marginTop="22dp"
         android:layout_toLeftOf="@+id/select_images" />
+    
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nofSelectedImages"
+        android:layout_marginTop="22dp" />
 
     <Button
         android:id="@+id/go_btn"
