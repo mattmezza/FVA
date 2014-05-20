@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -46,6 +48,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	private int actionCodeId;
 	private int earCodeId;
 	private int quality;
+	private ProgressDialog progressDialog;
 	// private static final int QUALITY = 1;
 	private static final int SELECT_PICTURE = 4;
 
@@ -216,11 +219,15 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	}
 
 	private void extractFeatures() {
+		progressDialog = new ProgressDialog(getApplicationContext());
+		progressDialog.setTitle("Processing...");
+		progressDialog.setMessage("Please wait.");
+		progressDialog.setCancelable(false);
+		progressDialog.setIndeterminate(true);
+		progressDialog.show();
 		FeatureExtractorTask task = new FeatureExtractorTask(getAction(actionCodeId), this.im2extr, this.username, getEar(this.earCodeId), this.quality);
 		task.setDelegate(this);
-		Log.d("TASK", "partito");
 		task.execute("");
-		Log.d("TASK", "finito");
 	}
 
 	private void read() {
@@ -241,11 +248,21 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_LONG).show();
 		if(result!=null)
 			Log.d("MainActivity", result.toString());
+		progressDialog.dismiss();
+		AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+		builder.setMessage("Estrazione terminata con successo!");
+		AlertDialog ad = builder.create();
+		ad.show();
 	}
 
 	@Override
 	public void onExtractorError(Exception e) {
 		Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
 		Log.d("MainActivity", e.toString());
+		progressDialog.dismiss();
+		AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+		builder.setMessage("Errore durante l'estrazione delle caratteristiche!\n"+e.toString());
+		AlertDialog ad = builder.create();
+		ad.show();
 	}
 }
