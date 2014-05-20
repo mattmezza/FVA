@@ -2,7 +2,7 @@ package it.unisa.earify.ui;
 
 import it.unisa.earify.ExtractorDelegate;
 import it.unisa.earify.FeatureExtractorAbstraction;
-import it.unisa.earify.FeatureExtractorRunnable;
+import it.unisa.earify.FeatureExtractorTask;
 import it.unisa.earify.R;
 import it.unisa.earify.algorithms.IFeature;
 import it.unisa.earify.config.Config;
@@ -216,10 +216,11 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	}
 
 	private void extractFeatures() {
-		FeatureExtractorRunnable runnable = new FeatureExtractorRunnable(getAction(actionCodeId), this.im2extr, this.username, getEar(this.earCodeId), this.quality);
-		runnable.setDelegate(this);
-		Handler handler = new Handler();
-		handler.post(runnable);
+		FeatureExtractorTask task = new FeatureExtractorTask(getAction(actionCodeId), this.im2extr, this.username, getEar(this.earCodeId), this.quality);
+		task.setDelegate(this);
+		Log.d("TASK", "partito");
+		task.execute("");
+		Log.d("TASK", "finito");
 	}
 
 	private void read() {
