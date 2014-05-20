@@ -1,6 +1,7 @@
 package it.unisa.earify;
 
 import it.unisa.earify.algorithms.IFeature;
+import it.unisa.earify.algorithms.Image;
 import it.unisa.earify.database.acquisitions.Acquisition;
 import it.unisa.earify.exceptions.InvalidActionException;
 
@@ -8,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.graphics.Bitmap;
-import android.media.Image;
 
 public class FeatureExtractorAbstraction {
 	public static final int REGISTRATION = 0;
@@ -22,7 +22,7 @@ public class FeatureExtractorAbstraction {
 		this.implementor = new FeaturesExtractor();
 	}
 	
-	public Map<String, List<List<IFeature>>> extractFeatures(int pAction, List<Bitmap> pImages, String pUsername, int pEar, float pQuality) throws InvalidActionException {
+	public Map<String, List<List<IFeature>>> extractFeatures(int pAction, List<Image> pImages, String pUsername, int pEar, float pQuality) throws InvalidActionException {
 		if (pAction == REGISTRATION) {
 			this.implementor.register(pImages, pUsername, pEar, pQuality);
 			return null;

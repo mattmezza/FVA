@@ -1,6 +1,7 @@
 package it.unisa.earify;
 
 import it.unisa.earify.algorithms.IFeature;
+import it.unisa.earify.algorithms.Image;
 import it.unisa.earify.exceptions.InvalidActionException;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import android.graphics.Bitmap;
 
 public class FeatureExtractorRunnable implements Runnable {
 
-	public FeatureExtractorRunnable(int pAction, List<Bitmap> pImages, String pUsername, int pEar, float pQuality) {
+	public FeatureExtractorRunnable(int pAction, List<Image> pImages, String pUsername, int pEar, float pQuality) {
 		this.action = pAction;
 		this.images = pImages;
 		this.username = pUsername;
@@ -43,7 +44,7 @@ public class FeatureExtractorRunnable implements Runnable {
 	private ExtractorDelegate delegate;
 	
 	private int action;
-	private List<Bitmap> images;
+	private List<Image> images;
 	private String username;
 	private int ear;
 	private float quality;
