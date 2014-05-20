@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -246,9 +247,15 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		if(result!=null)
 			Log.d("MainActivity", result.toString());
 		progressDialog.dismiss();
-		AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-		builder.setMessage("Estrazione terminata con successo!");
-		AlertDialog ad = builder.create();
+		final AlertDialog ad = new AlertDialog.Builder(getApplicationContext()).create();
+		ad.setTitle("Wowowowow");
+		ad.setMessage("Estrazione terminata con successo!");
+		ad.setButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				ad.dismiss();
+			}
+		});
 		ad.show();
 	}
 
@@ -257,9 +264,15 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
 		Log.d("MainActivity", e.toString());
 		progressDialog.dismiss();
-		AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-		builder.setMessage("Errore durante l'estrazione delle caratteristiche!\n"+e.toString());
-		AlertDialog ad = builder.create();
+		final AlertDialog ad = new AlertDialog.Builder(getApplicationContext()).create();
+		ad.setTitle("Ooops");
+		ad.setMessage("Errore durante l'estrazione delle caratteristiche!\n"+e.toString());
+		ad.setButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				ad.dismiss();
+			}
+		});
 		ad.show();
 	}
 }
