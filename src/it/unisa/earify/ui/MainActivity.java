@@ -1,6 +1,8 @@
 package it.unisa.earify.ui;
 
+import it.unisa.earify.ExtractorDelegate;
 import it.unisa.earify.FeatureExtractorAbstraction;
+import it.unisa.earify.FeatureExtractorRunnable;
 import it.unisa.earify.R;
 import it.unisa.earify.algorithms.IFeature;
 import it.unisa.earify.config.Config;
@@ -23,6 +25,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,7 +41,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements ExtractorDelegate {
 	
 	private String selectedImagePath;
 	private String username;
@@ -97,7 +100,7 @@ public class MainActivity extends Activity {
 
             public void onClick(View arg0) {
 
-            	//otteniamo il codice qualit�, che per per default � 1.
+            	//otteniamo il codice qualita, che per per default 1.
             	EditText editQuality = (EditText) findViewById(R.id.fake_quality);
                 quality = Integer.parseInt(editQuality.getText().toString());
 
@@ -223,21 +226,10 @@ public class MainActivity extends Activity {
     }
 	
 	private void extractFeatures() {
-		FeatureExtractorAbstraction fea = new FeatureExtractorAbstraction();
-		Map<String,List<List<IFeature>>> result = null;
-		try {
-			result = fea.extractFeatures(getAction(actionCodeId), this.im2extr, this.username, getEar(this.earCodeId), this.quality);
-			Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_SHORT).show();
-			Log.d("MainActivity", result.toString());
-			
-		} catch (InvalidActionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RuntimeException e) {
-			Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-			Log.d("MainActivity", e.toString());
-		}
-	
+		FeatureExtractorRunnable runnable = new FeatureExtractorRunnable(getAction(actionCodeId), this.im2extr, this.username, getEar(this.earCodeId), this.quality);
+		runnable.setDelegate(this);
+		Handler handler = new Handler();
+		handler.post(runnable);
 	}
 	
 	private void read() {
@@ -249,6 +241,18 @@ public class MainActivity extends Activity {
 		} catch (RuntimeException e) {
 			Log.d("ERROR", e.toString());
 		}
+	}
+
+	@Override
+	public void onExtractorFinished(Map<String, List<List<IFeature>>> result) {
+		Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_LONG).show();
+		Log.d("MainActivity", result.toString());
+	}
+
+	@Override
+	public void onExtractorError(Exception e) {
+		Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+		Log.d("MainActivity", e.toString());
 	}
 	
 }

@@ -18,8 +18,6 @@ public class FeatureExtractorAbstraction {
 	public static final int EAR_RIGHT = Acquisition.EAR_RIGHT;
 	public static final int EAR_LEFT = Acquisition.EAR_LEFT;
 	
-	private IFeatureExtractor implementor;
-	
 	public FeatureExtractorAbstraction() {
 		this.implementor = new FeaturesExtractor();
 	}
@@ -36,4 +34,6 @@ public class FeatureExtractorAbstraction {
 		
 		throw new InvalidActionException(pAction);
 	}
+	
+	private IFeatureExtractor implementor;
 }
