@@ -238,7 +238,8 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	@Override
 	public void onExtractorFinished(Map<String, List<List<IFeature>>> result) {
 		Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_LONG).show();
-		Log.d("MainActivity", result.toString());
+		if(result!=null)
+			Log.d("MainActivity", result.toString());
 	}
 
 	@Override
