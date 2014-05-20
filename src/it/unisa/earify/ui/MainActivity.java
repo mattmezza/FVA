@@ -2,7 +2,7 @@ package it.unisa.earify.ui;
 
 import it.unisa.earify.ExtractorDelegate;
 import it.unisa.earify.FeatureExtractorAbstraction;
-import it.unisa.earify.FeatureExtractorRunnable;
+import it.unisa.earify.FeatureExtractorTask;
 import it.unisa.earify.R;
 import it.unisa.earify.algorithms.IFeature;
 import it.unisa.earify.config.Config;
@@ -17,7 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -46,6 +51,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	private int actionCodeId;
 	private int earCodeId;
 	private int quality;
+	private ProgressDialog progressDialog;
 	// private static final int QUALITY = 1;
 	private static final int SELECT_PICTURE = 4;
 
@@ -68,7 +74,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 			return rootView;
 		}
 	}
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main);
@@ -189,8 +195,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 				}
 				selectedImagePath = getPath(selectedImageUri);
 				TextView myTextView = (TextView) findViewById(R.id.textView2);
-				myTextView.setText(selectedImagePath);
-
+				myTextView.append("\n"+selectedImagePath);
 			}
 		}
 	}
@@ -216,10 +221,15 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	}
 
 	private void extractFeatures() {
-		FeatureExtractorRunnable runnable = new FeatureExtractorRunnable(getAction(actionCodeId), this.im2extr, this.username, getEar(this.earCodeId), this.quality);
-		runnable.setDelegate(this);
-		Handler handler = new Handler();
-		handler.post(runnable);
+		progressDialog = ProgressDialog.show(this, "Processing...",
+				"Please wait while your images are being processed...", true);
+		progressDialog.setCancelable(false);
+		progressDialog.show();
+		FeatureExtractorTask task = new FeatureExtractorTask(
+				getAction(actionCodeId), this.im2extr, this.username,
+				getEar(this.earCodeId), this.quality);
+		task.setDelegate(this);
+		task.execute("");
 	}
 
 	private void read() {
@@ -237,13 +247,48 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 
 	@Override
 	public void onExtractorFinished(Map<String, List<List<IFeature>>> result) {
-		Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_LONG).show();
-		Log.d("MainActivity", result.toString());
+		Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_LONG)
+				.show();
+		if (result != null)
+			Log.d("MainActivity", result.toString());
+		progressDialog.cancel();
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setTitle("Wowowow");
+		alertDialogBuilder
+				.setMessage(
+						"The features for selected images have been extracted successfully!").setCancelable(false)
+				.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				});
+		AlertDialog ad = alertDialogBuilder.create();
+		ad.show();
 	}
 
 	@Override
 	public void onExtractorError(Exception e) {
-		Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG)
+				.show();
 		Log.d("MainActivity", e.toString());
+		progressDialog.cancel();
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setTitle("Oops");
+		alertDialogBuilder
+				.setMessage(
+						"Errore durante l'estrazione delle caratteristiche!\n"
+								+ e.toString()).setCancelable(false)
+				.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				});
+		AlertDialog ad = alertDialogBuilder.create();
+		ad.show();
 	}
+
 }

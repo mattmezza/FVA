@@ -54,7 +54,8 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/fake_quality_ph"
-        android:inputType="numberDecimal" >
+        android:inputType="numberDecimal"
+        android:text="1" >
 
         <requestFocus />
     </EditText>
@@ -66,7 +67,8 @@
         android:layout_below="@+id/fake_quality"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:hint="@string/username_ph" />
+        android:hint="@string/username_ph"
+        android:text="demo" />
 
     <RadioGroup
         android:id="@+id/action_group"
@@ -114,7 +116,7 @@
     
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/nofSelectedImages"
         android:layout_marginTop="22dp" />
