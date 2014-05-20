@@ -219,11 +219,8 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	}
 
 	private void extractFeatures() {
-		progressDialog = new ProgressDialog(getApplicationContext());
-		progressDialog.setTitle("Processing...");
-		progressDialog.setMessage("Please wait.");
+		progressDialog = ProgressDialog.show(this, "Processing...", "Please wait while your images are being processed...", true);
 		progressDialog.setCancelable(false);
-		progressDialog.setIndeterminate(true);
 		progressDialog.show();
 		FeatureExtractorTask task = new FeatureExtractorTask(getAction(actionCodeId), this.im2extr, this.username, getEar(this.earCodeId), this.quality);
 		task.setDelegate(this);
