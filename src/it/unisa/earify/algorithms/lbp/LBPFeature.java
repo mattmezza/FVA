@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class LBPFeature implements IFeature, Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	public float[] descriptors;
+	public int[] descriptors;
 	
 	@Override
 	public double getDistance(IFeature pFeature) {

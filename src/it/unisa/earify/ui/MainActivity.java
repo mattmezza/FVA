@@ -6,6 +6,8 @@ import it.unisa.earify.FeatureExtractorTask;
 import it.unisa.earify.R;
 import it.unisa.earify.algorithms.IFeature;
 import it.unisa.earify.algorithms.Image;
+import it.unisa.earify.algorithms.lbp.LBPNativeLibrary;
+import it.unisa.earify.algorithms.lbp.LibraryLoader;
 import it.unisa.earify.config.Config;
 import it.unisa.earify.database.EarifyDatabaseHelper;
 import it.unisa.earify.database.acquisitions.Acquisition;
@@ -16,6 +18,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.opencv.android.OpenCVLoader;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -81,6 +85,12 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		setContentView(R.layout.fragment_main);
 
 		Config.setContext(this);
+		EarifyDatabaseHelper.init(this);
+		
+		if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_2, this, new LibraryLoader(this,"Earify")))
+		{
+			Log.e("err", "Cannot connect to OpenCV Manager");
+		} 
 
 		((Button) findViewById(R.id.select_images))
 				.setOnClickListener(new OnClickListener() {
@@ -97,8 +107,6 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 								SELECT_PICTURE);
 					}
 				});
-
-		EarifyDatabaseHelper.init(this);
 
 		((Button) findViewById(R.id.go_btn))
 				.setOnClickListener(new OnClickListener() {
@@ -138,6 +146,16 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onResume();
 	}
 
 	@Override
@@ -248,6 +266,27 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		} catch (RuntimeException e) {
 			Log.d("ERROR", e.toString());
 		}
+	}
+	
+	private void testLBP() {
+		String path = "/storage/extSdCard/DCIM/Camera/20130521_173230.jpg";
+		try {
+			int[] res = new LBPNativeLibrary().extractFeatures(path, 5, 5);
+			
+			for (int i = 0; i < 25; i++) {
+				int currentSum = 0;
+				for (int j = 0; j < 256; j++) {
+					int index = i*256 + j;
+					currentSum += res[index];
+				}
+				
+				Log.d("Total Value area " + i, String.valueOf(currentSum));
+			}
+			Log.d("OOOOk", "Yeah");
+		} catch (Exception e) {
+			Log.d("ERROR", e.toString());
+		}
+		Log.d("Ok", "Alright!");
 	}
 
 	@Override

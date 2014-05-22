@@ -1,5 +1,7 @@
 package it.unisa.earify.algorithms.lbp;
 
+import android.util.Log;
+
 public class LBPNativeLibrary {
-	public native void extractFeatures(String pPath, String pDestinationPath);
+	public native int[] extractFeatures(String pPath, int pWidth, int pHeight);
 }

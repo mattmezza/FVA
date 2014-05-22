@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     it_unisa_earify_algorithms_lbp_LBPNativeLibrary
  * Method:    extractFeatures
- * Signature: (Ljava/lang/String;)[F
+ * Signature: (Ljava/lang/String;II)[I
  */
-JNIEXPORT jvoid JNICALL Java_it_unisa_earify_algorithms_lbp_LBPNativeLibrary_extractFeatures
-	(JNIEnv*, jobject, jstring, jstring);
+JNIEXPORT jintArray JNICALL Java_it_unisa_earify_algorithms_lbp_LBPNativeLibrary_extractFeatures
+  (JNIEnv *, jobject, jstring, jint, jint);
 
 #ifdef __cplusplus
 }

@@ -14,7 +14,7 @@ public class LBP {
 
 	public static ExtractionAlgorithm getInstance() {
 		if(LBP.instance == null) {
-			LBP.instance = new JSIFT();
+			LBP.instance = new NativeLBP();
 		}
 		return LBP.instance;
 	}
