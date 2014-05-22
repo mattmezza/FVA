@@ -1,9 +1,6 @@
 #################
 ## Eclipse
 #################
-##### Matt #########
-*.properties 
-### fine matt ######
 *.pydevproject
 .project
 .metadata
@@ -14,6 +11,7 @@ tmp/
 *.swp
 *~.nib
 local.properties
+project.properties
 .classpath
 .settings/
 .loadpath
@@ -236,7 +234,6 @@ gen/
 # Gradle files
 .gradle/
 build/
-*/Android.mk
 # Local configuration file (sdk path, etc)
 local.properties
 
@@ -250,4 +247,4 @@ proguard/
 # ignore custom jni/Android.mk
 # ignore libEarify.so
 jni/Android.mk
-libs/armeabi/libEarify.so
+libs/*/libEarify.so
