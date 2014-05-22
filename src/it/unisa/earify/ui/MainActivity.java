@@ -11,6 +11,7 @@ import it.unisa.earify.config.Config;
 import it.unisa.earify.database.EarifyDatabaseHelper;
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,16 +59,25 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 
 	private static final int SELECT_PICTURE = 4;
 
-	private List<Image> im2extr = new ArrayList<Image>();
+	private List<Image> im2extr;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main);
+		
+		this.im2extr = new ArrayList<Image>();
+		if (savedInstanceState != null) {
+			Serializable images = savedInstanceState.getSerializable("images");
+			if (images != null && images instanceof List<?>) {
+				this.im2extr = (List<Image>)images;
+			} else
+				savedInstanceState.putSerializable("images", (Serializable)im2extr);
+		}
 
 		Config.setContext(this);
 		EarifyDatabaseHelper.init(this);
 
-		if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this,
+		if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this,
 				new LibraryLoader(this, "Earify"))) {
 			Log.e("err", "Cannot connect to OpenCV Manager");
 		}
@@ -160,12 +170,14 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 					Image image = new Image();
 					image.setBitmap(bmp);
 					image.setPath(selectedImagePath.toString());
-
 					im2extr.add(image);
+					Log.d("Debug", "Aggiunta immagine " + image.getPath() + "; totale: "+ im2extr.size());
 				} catch (FileNotFoundException e) {
+					Log.d("Error", e.getMessage());
 					Toast.makeText(getApplicationContext(), e.toString(),
 							Toast.LENGTH_LONG).show();
 				} catch (Exception e) {
+					Log.d("Error", e.getMessage());
 					Toast.makeText(getApplicationContext(), e.toString(),
 							Toast.LENGTH_LONG).show();
 				}
@@ -254,8 +266,6 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 
 	@Override
 	public void onExtractorFinished(Map<String, List<List<IFeature>>> result) {
-		Toast.makeText(getApplicationContext(), "finito", Toast.LENGTH_LONG)
-				.show();
 		if (result != null)
 			Log.d("MainActivity", result.toString());
 		progressDialog.cancel();
