@@ -6,13 +6,9 @@ import it.unisa.earify.FeatureExtractorTask;
 import it.unisa.earify.R;
 import it.unisa.earify.algorithms.IFeature;
 import it.unisa.earify.algorithms.Image;
-import it.unisa.earify.algorithms.lbp.LBPNativeLibrary;
 import it.unisa.earify.algorithms.lbp.LibraryLoader;
 import it.unisa.earify.config.Config;
 import it.unisa.earify.database.EarifyDatabaseHelper;
-import it.unisa.earify.database.acquisitions.Acquisition;
-import it.unisa.earify.database.acquisitions.AcquisitionControl;
-import it.unisa.earify.database.users.UsersControl;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -23,9 +19,6 @@ import org.opencv.android.OpenCVLoader;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,16 +27,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -77,7 +67,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		Config.setContext(this);
 		EarifyDatabaseHelper.init(this);
 
-		if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_2, this,
+		if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this,
 				new LibraryLoader(this, "Earify"))) {
 			Log.e("err", "Cannot connect to OpenCV Manager");
 		}
@@ -161,6 +151,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 			if (requestCode == SELECT_PICTURE) {
 
 				Uri selectedImageUri = data.getData();
+				selectedImagePath = getPath(selectedImageUri);
 
 				try {
 					Bitmap bmp = BitmapFactory
@@ -173,11 +164,13 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 					im2extr.add(image);
 				} catch (FileNotFoundException e) {
 					Toast.makeText(getApplicationContext(), e.toString(),
-							Toast.LENGTH_SHORT).show();
+							Toast.LENGTH_LONG).show();
+				} catch (Exception e) {
+					Toast.makeText(getApplicationContext(), e.toString(),
+							Toast.LENGTH_LONG).show();
 				}
 
-				Config config = Config.getInstance();
-				int nofImages = config.numberOfImagesToUse();
+				int nofImages = Config.getInstance().numberOfImagesToUse();
 				TextView nofTextView = (TextView) findViewById(R.id.nofSelectedImages);
 				nofTextView.setText("Immagini selezionate: " + im2extr.size()
 						+ "/" + nofImages);
@@ -186,7 +179,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 					Button button = ((Button) findViewById(R.id.select_images));
 					button.setEnabled(false);
 				}
-				selectedImagePath = getPath(selectedImageUri);
+
 				TextView myTextView = (TextView) findViewById(R.id.textView2);
 				myTextView.append("\n" + selectedImagePath);
 			}
@@ -225,39 +218,39 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		task.execute("");
 	}
 
-//	private void read() {
-//		try {
-//			List<Acquisition> as = AcquisitionControl.getInstance()
-//					.getAcquisitions(UsersControl.getInstance().getUser("mm"),
-//							getEar(this.earCodeId));
-//			for (Acquisition a : as) {
-//				Log.d("Feature", a.toString());
-//			}
-//		} catch (RuntimeException e) {
-//			Log.d("ERROR", e.toString());
-//		}
-//	}
-//
-//	private void testLBP() {
-//		String path = "/storage/extSdCard/DCIM/Camera/20130521_173230.jpg";
-//		try {
-//			int[] res = new LBPNativeLibrary().extractFeatures(path, 5, 5);
-//
-//			for (int i = 0; i < 25; i++) {
-//				int currentSum = 0;
-//				for (int j = 0; j < 256; j++) {
-//					int index = i * 256 + j;
-//					currentSum += res[index];
-//				}
-//
-//				Log.d("Total Value area " + i, String.valueOf(currentSum));
-//			}
-//			Log.d("OOOOk", "Yeah");
-//		} catch (Exception e) {
-//			Log.d("ERROR", e.toString());
-//		}
-//		Log.d("Ok", "Alright!");
-//	}
+	// private void read() {
+	// try {
+	// List<Acquisition> as = AcquisitionControl.getInstance()
+	// .getAcquisitions(UsersControl.getInstance().getUser("mm"),
+	// getEar(this.earCodeId));
+	// for (Acquisition a : as) {
+	// Log.d("Feature", a.toString());
+	// }
+	// } catch (RuntimeException e) {
+	// Log.d("ERROR", e.toString());
+	// }
+	// }
+	//
+	// private void testLBP() {
+	// String path = "/storage/extSdCard/DCIM/Camera/20130521_173230.jpg";
+	// try {
+	// int[] res = new LBPNativeLibrary().extractFeatures(path, 5, 5);
+	//
+	// for (int i = 0; i < 25; i++) {
+	// int currentSum = 0;
+	// for (int j = 0; j < 256; j++) {
+	// int index = i * 256 + j;
+	// currentSum += res[index];
+	// }
+	//
+	// Log.d("Total Value area " + i, String.valueOf(currentSum));
+	// }
+	// Log.d("OOOOk", "Yeah");
+	// } catch (Exception e) {
+	// Log.d("ERROR", e.toString());
+	// }
+	// Log.d("Ok", "Alright!");
+	// }
 
 	@Override
 	public void onExtractorFinished(Map<String, List<List<IFeature>>> result) {
