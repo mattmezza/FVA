@@ -56,29 +56,19 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	private int actionCodeId;
 	private int earCodeId;
 	private int quality;
+
 	private ProgressDialog progressDialog;
-	// private static final int QUALITY = 1;
+
+	private Button addImgBtn;
+	private Button goBtn;
+	private EditText qualityEditText;
+	private EditText usernameEditText;
+	private RadioGroup actionRadioGroup;
+	private RadioGroup earRadioGroup;
+
 	private static final int SELECT_PICTURE = 4;
 
 	private List<Image> im2extr = new ArrayList<Image>();
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
-
-			return rootView;
-		}
-	}
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,59 +76,49 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 
 		Config.setContext(this);
 		EarifyDatabaseHelper.init(this);
-		
-		if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_2, this, new LibraryLoader(this,"Earify")))
-		{
+
+		if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_2, this,
+				new LibraryLoader(this, "Earify"))) {
 			Log.e("err", "Cannot connect to OpenCV Manager");
-		} 
+		}
 
-		((Button) findViewById(R.id.select_images))
-				.setOnClickListener(new OnClickListener() {
+		this.qualityEditText = (EditText) findViewById(R.id.fake_quality);
+		this.usernameEditText = (EditText) findViewById(R.id.username_tv);
+		this.earRadioGroup = (RadioGroup) findViewById(R.id.radio_earcode);
+		this.actionRadioGroup = (RadioGroup) findViewById(R.id.action_group);
 
-					public void onClick(View arg0) {
+		this.addImgBtn = (Button) findViewById(R.id.select_images);
+		this.addImgBtn.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				// in onCreate or any event where your want the user to
+				// select a file
+				Intent intent = new Intent();
+				intent.setType("image/*");
+				intent.setAction(Intent.ACTION_GET_CONTENT);
+				startActivityForResult(
+						Intent.createChooser(intent, "Select Picture"),
+						SELECT_PICTURE);
+			}
+		});
 
-						// in onCreate or any event where your want the user to
-						// select a file
-						Intent intent = new Intent();
-						intent.setType("image/*");
-						intent.setAction(Intent.ACTION_GET_CONTENT);
-						startActivityForResult(
-								Intent.createChooser(intent, "Select Picture"),
-								SELECT_PICTURE);
-					}
-				});
-
-		((Button) findViewById(R.id.go_btn))
-				.setOnClickListener(new OnClickListener() {
-
-					public void onClick(View arg0) {
-
-						// otteniamo il codice qualita, che per per default
-						EditText editQuality = (EditText) findViewById(R.id.fake_quality);
-						quality = Integer.parseInt(editQuality.getText()
-								.toString());
-
-						// otteniamo il nome dell'utente.
-						EditText editUsr = (EditText) findViewById(R.id.username_tv);
-						username = editUsr.getText().toString();
-
-						// otteniamo l'id del radio button, dx corrisponde al
-						// valore intero 0, sx corrisponde al valore intero 1.
-						actionCodeId = ((RadioGroup) findViewById(R.id.action_group))
-								.getCheckedRadioButtonId();
-
-						// otteniamo l'id del radio button, dx corrisponde al
-						// valore intero 0, sx corrisponde al valore intero 1.
-						earCodeId = ((RadioGroup) findViewById(R.id.radio_earcode))
-								.getCheckedRadioButtonId();
-
-						// extrazione delle feature
-						extractFeatures();
-
-						// Toast.makeText(getApplicationContext(), "Running...",
-						// Toast.LENGTH_SHORT).show();
-					}
-				});
+		this.goBtn = (Button) findViewById(R.id.go_btn);
+		this.goBtn.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				// otteniamo il codice qualita, che per per default
+				quality = Integer
+						.parseInt(qualityEditText.getText().toString());
+				// otteniamo il nome dell'utente.
+				username = usernameEditText.getText().toString();
+				// otteniamo l'id del radio button, dx corrisponde al
+				// valore intero 0, sx corrisponde al valore intero 1.
+				actionCodeId = actionRadioGroup.getCheckedRadioButtonId();
+				// otteniamo l'id del radio button, dx corrisponde al
+				// valore intero 0, sx corrisponde al valore intero 1.
+				earCodeId = earRadioGroup.getCheckedRadioButtonId();
+				// extrazione delle feature
+				extractFeatures();
+			}
+		});
 	}
 
 	@Override
@@ -146,16 +126,6 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		return true;
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-	
-	@Override
-	protected void onPause() {
-		super.onResume();
 	}
 
 	@Override
@@ -199,7 +169,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 					Image image = new Image();
 					image.setBitmap(bmp);
 					image.setPath(selectedImagePath.toString());
-					
+
 					im2extr.add(image);
 				} catch (FileNotFoundException e) {
 					Toast.makeText(getApplicationContext(), e.toString(),
@@ -218,7 +188,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 				}
 				selectedImagePath = getPath(selectedImageUri);
 				TextView myTextView = (TextView) findViewById(R.id.textView2);
-				myTextView.append("\n"+selectedImagePath);
+				myTextView.append("\n" + selectedImagePath);
 			}
 		}
 	}
@@ -255,39 +225,39 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		task.execute("");
 	}
 
-	private void read() {
-		try {
-			List<Acquisition> as = AcquisitionControl.getInstance()
-					.getAcquisitions(UsersControl.getInstance().getUser("mm"),
-							getEar(this.earCodeId));
-			for (Acquisition a : as) {
-				Log.d("Feature", a.toString());
-			}
-		} catch (RuntimeException e) {
-			Log.d("ERROR", e.toString());
-		}
-	}
-	
-	private void testLBP() {
-		String path = "/storage/extSdCard/DCIM/Camera/20130521_173230.jpg";
-		try {
-			int[] res = new LBPNativeLibrary().extractFeatures(path, 5, 5);
-			
-			for (int i = 0; i < 25; i++) {
-				int currentSum = 0;
-				for (int j = 0; j < 256; j++) {
-					int index = i*256 + j;
-					currentSum += res[index];
-				}
-				
-				Log.d("Total Value area " + i, String.valueOf(currentSum));
-			}
-			Log.d("OOOOk", "Yeah");
-		} catch (Exception e) {
-			Log.d("ERROR", e.toString());
-		}
-		Log.d("Ok", "Alright!");
-	}
+//	private void read() {
+//		try {
+//			List<Acquisition> as = AcquisitionControl.getInstance()
+//					.getAcquisitions(UsersControl.getInstance().getUser("mm"),
+//							getEar(this.earCodeId));
+//			for (Acquisition a : as) {
+//				Log.d("Feature", a.toString());
+//			}
+//		} catch (RuntimeException e) {
+//			Log.d("ERROR", e.toString());
+//		}
+//	}
+//
+//	private void testLBP() {
+//		String path = "/storage/extSdCard/DCIM/Camera/20130521_173230.jpg";
+//		try {
+//			int[] res = new LBPNativeLibrary().extractFeatures(path, 5, 5);
+//
+//			for (int i = 0; i < 25; i++) {
+//				int currentSum = 0;
+//				for (int j = 0; j < 256; j++) {
+//					int index = i * 256 + j;
+//					currentSum += res[index];
+//				}
+//
+//				Log.d("Total Value area " + i, String.valueOf(currentSum));
+//			}
+//			Log.d("OOOOk", "Yeah");
+//		} catch (Exception e) {
+//			Log.d("ERROR", e.toString());
+//		}
+//		Log.d("Ok", "Alright!");
+//	}
 
 	@Override
 	public void onExtractorFinished(Map<String, List<List<IFeature>>> result) {
@@ -300,7 +270,8 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		alertDialogBuilder.setTitle("Wowowow");
 		alertDialogBuilder
 				.setMessage(
-						"The features for selected images have been extracted successfully!").setCancelable(false)
+						"The features for selected images have been extracted successfully!")
+				.setCancelable(false)
 				.setNegativeButton("OK", new DialogInterface.OnClickListener() {
 
 					@Override
