@@ -4,9 +4,9 @@ include $(CLEAR_VARS)
 
 include /home/simone/Programmi/Android/OpenCV-2.4.9-android-sdk/sdk/native/jni/OpenCV.mk
 
-LOCAL_MODULE    := Earify
-LOCAL_SRC_FILES := Earify.c, lbp.c
+LOCAL_MODULE    := libEarify
+LOCAL_SRC_FILES := lbp.c Earify.c
 
-LOCAL_LDLIBS +=  -llog -ldl
-
+LOCAL_LDLIBS += -ldl
+LOCAL_LDLIBS += -L$(SYSROOT)/usr/lib -llog 
 include $(BUILD_SHARED_LIBRARY)

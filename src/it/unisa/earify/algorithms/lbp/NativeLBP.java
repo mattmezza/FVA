@@ -15,14 +15,13 @@ public class NativeLBP implements ExtractionAlgorithm {
 	
 	@Override
 	public List<IFeature> calculate(Image image) {
-		new LBPNativeLibrary().extractFeatures(image.getPath(), "");
+		int[] result = new LBPNativeLibrary().extractFeatures(image.getPath(), 5, 5);
 		
 		List<IFeature> features = new ArrayList<IFeature>();
-		/*
 		LBPFeature mainFeature = new LBPFeature();
-		mainFeature.descriptors = calculatedFeatures;
+		mainFeature.descriptors = result;
 		features.add(mainFeature);
-		*/
+		
 		return features;
 	}
 

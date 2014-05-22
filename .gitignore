@@ -236,7 +236,7 @@ gen/
 # Gradle files
 .gradle/
 build/
-
+*/Android.mk
 # Local configuration file (sdk path, etc)
 local.properties
 
