@@ -11,6 +11,19 @@ public class LBPFeature implements IFeature, Serializable {
 	
 	@Override
 	public double getDistance(IFeature pFeature) {
-		return 0;
+		if (pFeature instanceof LBPFeature) {
+			LBPFeature feature = (LBPFeature)pFeature;
+			
+			if (feature.descriptors.length != feature.descriptors.length)
+				return -1;
+			
+			double distance = 0;
+			for (int i = 0; i < descriptors.length; i++) {
+				distance += Math.pow(descriptors[i] - feature.descriptors[i], 2);
+			}
+			
+			return Math.sqrt(distance);
+		} else
+			return -1;
 	}
 }
