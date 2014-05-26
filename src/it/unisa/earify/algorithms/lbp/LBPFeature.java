@@ -1,5 +1,6 @@
 package it.unisa.earify.algorithms.lbp;
 
+
 import it.unisa.earify.algorithms.IFeature;
 
 import java.io.Serializable;

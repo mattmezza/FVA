@@ -59,21 +59,14 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 
 	private static final int SELECT_PICTURE = 4;
 
-	private List<Image> im2extr;
+	private List<Uri> im2extr;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main);
 		
-		this.im2extr = new ArrayList<Image>();
-		if (savedInstanceState != null) {
-			Serializable images = savedInstanceState.getSerializable("images");
-			if (images != null && images instanceof List<?>) {
-				this.im2extr = (List<Image>)images;
-			} else
-				savedInstanceState.putSerializable("images", (Serializable)im2extr);
-		}
-
+		this.im2extr = new ArrayList<Uri>();
+		
 		Config.setContext(this);
 		EarifyDatabaseHelper.init(this);
 
@@ -164,18 +157,8 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 				selectedImagePath = getPath(selectedImageUri);
 
 				try {
-					Bitmap bmp = BitmapFactory
-							.decodeStream(getContentResolver().openInputStream(
-									selectedImageUri));
-					Image image = new Image();
-					image.setBitmap(bmp);
-					image.setPath(selectedImagePath.toString());
-					im2extr.add(image);
-					Log.d("Debug", "Aggiunta immagine " + image.getPath() + "; totale: "+ im2extr.size());
-				} catch (FileNotFoundException e) {
-					Log.d("Error", e.getMessage());
-					Toast.makeText(getApplicationContext(), e.toString(),
-							Toast.LENGTH_LONG).show();
+					im2extr.add(selectedImageUri);
+					Log.d("Debug", "Aggiunta immagine " + selectedImagePath + "; totale: "+ im2extr.size());
 				} catch (Exception e) {
 					Log.d("Error", e.getMessage());
 					Toast.makeText(getApplicationContext(), e.toString(),
@@ -223,8 +206,23 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 				"Please wait while your images are being processed...", true);
 		progressDialog.setCancelable(false);
 		progressDialog.show();
+		
+		List<Image> images = new ArrayList<Image>();
+		for (Uri uri : this.im2extr) {
+			try {
+				Bitmap bitmap = BitmapFactory
+						.decodeStream(getContentResolver().openInputStream(
+								uri));
+				
+				Image image = new Image();
+				image.setPath(getPath(uri));
+				image.setBitmap(bitmap);
+			} catch (FileNotFoundException e) {
+				Log.d("Error", "File " + uri.getPath());
+			}
+		}
 		FeatureExtractorTask task = new FeatureExtractorTask(
-				getAction(actionCodeId), this.im2extr, this.username,
+				getAction(actionCodeId), images, this.username,
 				getEar(this.earCodeId), this.quality);
 		task.setDelegate(this);
 		task.execute("");
@@ -309,4 +307,20 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		ad.show();
 	}
 
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		outState.putSerializable("URIS", (Serializable)this.im2extr);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		Serializable loaded = savedInstanceState.getSerializable("URIS");
+		if (loaded != null)
+			this.im2extr = (List<Uri>)loaded;
+	}
 }
