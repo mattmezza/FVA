@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		Config.setContext(this);
 		EarifyDatabaseHelper.init(this);
 
-		if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this,
+		if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this,
 				new LibraryLoader(this, "Earify"))) {
 			Log.e("err", "Cannot connect to OpenCV Manager");
 		}
