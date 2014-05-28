@@ -1,1 +1,16 @@
 \chapter{Parametri}
+Il modulo restituisce un oggetto di tipo Map$<$String, List$<$List$<$IFeature$>>>$ (ovvero una mappa del tipo ``Nome algoritmo -$>$ Lista''). In particolare, la lista contiene n elementi, dove n è il numero di immagini passate in input e, per ogni immagine i, è presente un'ulteriore lista di feature relative all'immagine i-esima.\\
+Ad esempio, se sono passate 2 immagini e sono attivi gli algoritmi SIFT e LBP, il valore di ritorno sarà formato così:\\\\
+Map(\\
+``SIFT'',  List(List$<$IFeature$>$, List$<$IFeature$>$)\\
+``LBP'',   List(List$<$IFeature$>$, List$<$IFeature$>$)\\
+)\\\\
+Se sono passate 3 immagini con il solo algoritmo SIFT attivo:\\\\
+Map(\\
+``SIFT'',  List(List$<$IFeature$>$, List$<$IFeature$>$, List$<$IFeature$>$)\\
+)\\\\
+Ad ogni immagine è associata, dunque, una lista di IFeature (per ogni algoritmo). IFeature è un'interfaccia che descrive una feature generica;\\ l'implementazione cambia in base all'algoritmo. In allegato invio i file sorgenti di IFeature, LBPFeature, SIFTFeature (le ultime due sono implementazioni concrete della prima) e Feature (la classe della libreria per il SIFT che noi incapsuliamo in SIFTFeature).\\
+L'algoritmo LBP restituisce, per ogni immagine, una singola IFeature (di tipo LBPFeature) che ha al suo interno, come descrittori (variabile "descriptors"), un array di interi.\\
+L'algoritmo SIFT restituisce, per ogni immagine, un numero variabile di IFeature (di tipo SIFTFeature) dipendente dall'immagine.\\
+La classe IFeature ha un metodo (getDistance(IFeature)) adibito al calcolo della distanza tra due IFeature: il metodo è già implementato per l'algoritmo SIFT (è definito nella libreria che abbiamo utilizzato) ma non per LBP.\\
+Le feature sono serializzate nel database in fase di registrazione.\\
