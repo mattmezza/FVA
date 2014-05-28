@@ -9,9 +9,18 @@ import java.util.List;
 
 import android.graphics.Bitmap;
 
+/**
+ * Algoritmo LBP
+ * @author simone
+ *
+ */
 public class LBP {
 
-
+	/**
+	 * Restituisce l'istanza contenente l'implementazione corrente dell'algoritmo
+	 * LBP
+	 * @return
+	 */
 	public static ExtractionAlgorithm getInstance() {
 		if(LBP.instance == null) {
 			LBP.instance = new NativeLBP();

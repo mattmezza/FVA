@@ -5,6 +5,11 @@ import org.opencv.android.LoaderCallbackInterface;
 import android.app.Activity;
 import android.util.Log;
 
+/**
+ * Classe che carica la libreria esterna
+ * @author simone
+ *
+ */
 public class LibraryLoader extends  BaseLoaderCallback {
 
 	private String libPath;

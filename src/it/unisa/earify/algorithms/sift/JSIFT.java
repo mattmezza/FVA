@@ -12,6 +12,11 @@ import java.util.Vector;
 import mpi.cbg.fly.Feature;
 import android.graphics.Bitmap;
 
+/**
+ * Implementazione Java dell'algoritmo SIFT
+ * @author simone
+ *
+ */
 public class JSIFT implements ExtractionAlgorithm {
 
 	public static final String NAME = "SIFT";

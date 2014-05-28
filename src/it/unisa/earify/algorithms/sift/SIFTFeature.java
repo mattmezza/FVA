@@ -7,6 +7,11 @@ import java.io.ObjectOutputStream;
 import mpi.cbg.fly.Feature;
 import it.unisa.earify.algorithms.IFeature;
 
+/**
+ * Feature relativa all'algoritmo SIFT.
+ * @author simone
+ *
+ */
 public class SIFTFeature implements IFeature {
 
 	public SIFTFeature(Feature pFeature) {

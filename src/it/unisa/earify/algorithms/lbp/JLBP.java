@@ -12,6 +12,11 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 
+/**
+ * Implementazione Java dell'algoritmo LBP
+ * @author simone
+ *
+ */
 public class JLBP implements ExtractionAlgorithm {
 	
 	private static final int MAXBYTE = 256;
@@ -77,7 +82,7 @@ public class JLBP implements ExtractionAlgorithm {
 		int blockWidth = img.getWidth()/cols;
 		int blockHeight = img.getHeight()/rows;
 		
-		//Definisce il vettore che conterra'  il risultato
+		//Definisce il vettore che conterra'ï¿½ il risultato
 		int[] vector = new int[MAXBYTE * rows * cols];
 		int vectorCursor = 0;
 		
@@ -131,6 +136,9 @@ public class JLBP implements ExtractionAlgorithm {
 		return(size(width, height) - 1);
 	}
 
+	/**
+	 * Restituisce una lista composta da una singola caratteristica
+	 */
 	@Override
 	public List<IFeature> calculate(Image image) {
 		List<IFeature> result = new ArrayList<IFeature>();

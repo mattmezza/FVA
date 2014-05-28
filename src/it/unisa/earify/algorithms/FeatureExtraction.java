@@ -7,12 +7,24 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * Contesto che istanzia la lista concreta di algoritmi per il calcolo delle caratteristiche
+ * @author simone
+ *
+ */
 public class FeatureExtraction {
 
+	/**
+	 * Istanzia il contesto
+	 */
 	public FeatureExtraction() {
 		this.policy = new ExtractionAlgorithmPolicy();
 	}
 	
+	/**
+	 * Restituisce la lista di algoritmi da utilizzare per l'estrazione delle caratteristiche
+	 * @return
+	 */
 	public Set<ExtractionAlgorithm> getFeatureExtractionAlgorithms() {
 		Set<ExtractionAlgorithm> feSet = new HashSet<ExtractionAlgorithm>();
 		Set<String> algs = policy.getAlgorithms();

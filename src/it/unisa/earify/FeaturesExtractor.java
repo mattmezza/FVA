@@ -21,10 +21,23 @@ import org.opencv.android.OpenCVLoader;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
+/**
+ * Componente specifica in grado di estrarre le caratteristiche di una lista di immagini.
+ * @author simone
+ *
+ */
 public class FeaturesExtractor implements IFeatureExtractor {
 	// private static final String DATABASE_PATH = "data.db";
 
+	/**
+	 * Registra l'utente specificato nel database, utilizzando la lista di immagini passate relative all'orecchio
+	 * specificato.
+	 * 
+	 * @param pImages Lista delle immagini
+	 * @param pUsername Nome dell'utente da registrare
+	 * @param pEar Identificativo delle orecchie da acquisire. Usare {@link FeatureExtractorAbstraction#EAR_LEFT EAR_LEFT} e 
+	 * {@link FeatureExtractorAbstraction#EAR_RIGHT EAR_RIGHT}
+	 */
 	@Override
 	public void register(List<Image> pImages, String pUsername, int pEar,
 			float pQuality) {
@@ -54,6 +67,9 @@ public class FeaturesExtractor implements IFeatureExtractor {
 		}
 	}
 
+	/**
+	 * Vedi il metodo {@link FeatureExtractor#extractFeatures(int, List, String, int, float) extractFeature}
+	 */
 	@Override
 	public Map<String, List<List<IFeature>>> extractFeature(
 			List<Image> pImages, String pUsername, int pEar, float pQuality) {

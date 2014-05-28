@@ -4,6 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+/**
+ * Gestisce la configurazione
+ * @author simone
+ *
+ */
 public class Config {
 
 	public static Config getInstance() {
