@@ -1,0 +1,20 @@
+\chapter{Specifica}
+\textbf{Input:}
+\begin{itemize}
+	\item N (definito nel file di configurazione, es N=4) immagini di orecchio segmentate;
+	\item Username;
+	\item Punteggio qualità;
+	\item Azione: registrazione/riconoscimento/verifica;
+\end{itemize}
+\textbf{Funzionalità principali:}
+\begin{itemize}
+	\item Estrazione delle caratteristiche con uno o più algoritmi (definito in un file di configurazione);
+	\item Salvataggio degli N vettori delle caratteristiche, con associato lo username, in caso di registrazione;
+\end{itemize}
+\textbf{Output:}
+\begin{itemize}
+	\item Uno o più vettori delle caratteristiche (a seconda del numero di algoritmi di feature extraction usati);
+	\item Username;
+	\item Punteggio qualità;
+	\item Azione: registrazione/riconoscimento/verifica;
+\end{itemize}
