@@ -1,12 +1,21 @@
 package it.unisa.earify.algorithms.lbp;
 
+
 import it.unisa.earify.algorithms.IFeature;
 
 import java.io.Serializable;
 
+/**
+ * Feature specifica dell'algoritmo LBP
+ * @author simone
+ * 
+ */
 public class LBPFeature implements IFeature, Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Lista di descrittori
+	 */
 	public int[] descriptors;
 	
 	@Override

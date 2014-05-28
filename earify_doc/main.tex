@@ -1,0 +1,64 @@
+\documentclass[a4paper, 12pt, italian]{report}
+\usepackage{ctable}
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage[italian]{babel}
+
+\usepackage[raggedright]{titlesec}
+\usepackage{blindtext}
+
+\titleformat{\chapter}[hang]{\bfseries\huge}{\thechapter.}{2pc}{}
+\titlelabel{\thetitle.\quad}   % For consistency in all headings
+
+\begin{document}
+\begin{titlepage}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+\center 
+\textsc{\LARGE Università degli studi di Salerno}\\[1cm] 
+\includegraphics[width=3.5cm]{img/logo.jpg} \\[1cm]
+\textsc{\large Progetto di Fondamenti di Visione Artificiale}\\[0.5cm]
+\textsc{\Large Gruppo 2}\\[0.5cm] 
+ \HRule \\[0.4cm]
+{ \large \bfseries Modulo di estrazione delle caratteristiche dell'orecchio}\\[0.4cm] 
+\HRule \\[1.5cm]
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Autori:}\\
+Matteo \textsc{Merola}\\
+Simone \textsc{Scalabrino}\\
+Carlo \textsc{Branca}\\
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisore:} \\
+Prof. Michele \textsc{Nappi}
+\end{flushright}
+\end{minipage}\\[2.5cm]
+
+
+{\Large Documentazione}\\
+Versione 1.0\\[1cm]
+
+{\large 28 maggio 2014} % Date, change the \today to a set date if you want to be precise
+
+\vfill
+
+\end{titlepage}		
+    %\input{Revision}
+	\setcounter{tocdepth}{1}	
+	\tableofcontents
+	%\listoffigures
+	%\listoftables
+	
+	\input{Scopo}
+	\input{Specifica}
+	\input{Parametri}
+	
+\end{document}
