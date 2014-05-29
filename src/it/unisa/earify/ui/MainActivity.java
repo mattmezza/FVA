@@ -41,6 +41,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Activity principale dell'applicazione
+ * @author simone
+ *
+ */
 public class MainActivity extends Activity implements ExtractorDelegate {
 	private String selectedImagePath;
 	private String username;
@@ -61,6 +66,11 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 
 	private List<Uri> im2extr;
 
+	/**
+	 * Metodo che gestisce la creazione dell'activity. In particolare:
+	 * · Carica la libreria OpenCV
+	 * · Inizializza le variabili d'istanza relative a tasti, checkbox e textbox
+	 */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main);
@@ -133,6 +143,11 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		return false;
 	}
 
+	/**
+	 * Restituisce il path relativo all'URI di una determinata risorsa
+	 * @param uri URI
+	 * @return Una stringa contenente il path della risorsa cercata
+	 */
 	public String getPath(Uri uri) {
 		if (uri == null) {
 			return null;
@@ -149,6 +164,12 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 		return uri.getPath();
 	}
 
+	/**
+	 * Metodo chiamato quando è stata selezionata un'immagine dall'utente.
+	 * @param requestCode Codice di richiesta
+	 * @param resultCode Codice indicante il risultato
+	 * @param data Dati relativi all'immagine scelta dall'utente
+	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
 			if (requestCode == SELECT_PICTURE) {

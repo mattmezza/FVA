@@ -137,7 +137,7 @@ public class JLBP implements ExtractionAlgorithm {
 	}
 
 	/**
-	 * Restituisce una lista composta da una singola caratteristica
+	 * Restituisce una lista composta da una singola caratteristica.
 	 */
 	@Override
 	public List<IFeature> calculate(Image image) {

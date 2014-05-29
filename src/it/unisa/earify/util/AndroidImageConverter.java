@@ -2,6 +2,11 @@ package it.unisa.earify.util;
 
 import android.graphics.Bitmap;
 
+/**
+ * Classe che prende una bitmap e crea una griglia di pixel
+ * @author simone
+ *
+ */
 public class AndroidImageConverter {
 
 	public AndroidImageConverter(Bitmap pPicture) {
