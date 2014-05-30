@@ -26,9 +26,9 @@ public class FeatureExtractorTask extends AsyncTask<String, Void, String> {
 	 * @param pImages Lista di immagini di cui calcolare i vettori delle caratteristiche
 	 * @param pUsername Nome dell'utente
 	 * @param pEar Identificativo dell'orecchio. Usare le costanti di classe EAR_RIGHT e EAR_LEFT
-	 * @param pQuality Punteggio di qualità delle immagini date. Valore tra 0 e 1
+	 * @param pQuality Punteggio di qualit&agrave; delle immagini date. Valore tra 0 e 1
 	 * @return Una mappa che associa ogni algoritmo a una lista di lista di features.
-	 * @throws InvalidActionException Se l'azione specificata non è valida
+	 * @throws InvalidActionException Se l'azione specificata non &egrave; valida
 	 */
 	public FeatureExtractorTask(int pAction, List<Image> pImages, String pUsername, int pEar, float pQuality) {
 		this.action = pAction;
@@ -39,7 +39,7 @@ public class FeatureExtractorTask extends AsyncTask<String, Void, String> {
 	}
 	
 	/**
-	 * Imposta il delegato del task, che verrà richiamato quando questo sarà completo o se si verificherà un
+	 * Imposta il delegato del task, che verr&agrave; richiamato quando questo sar&agrave; completo o se si verificher&agrave; un
 	 * errore
 	 * @param extractorDelegate Delegato
 	 */

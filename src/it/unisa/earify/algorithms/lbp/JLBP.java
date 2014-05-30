@@ -22,6 +22,14 @@ public class JLBP implements ExtractionAlgorithm {
 	private static final int MAXBYTE = 256;
 	private static final int GRIDSIZE = 3;
 	
+	private int rows;
+	private int cols;
+	
+	public JLBP(int pRows, int pCols) {
+		this.rows = pRows;
+		this.cols = pCols;
+	}
+	
 	/*
 	 * Calcola il valore binario di una griglia 3x3 di pixel
 	 */
@@ -143,7 +151,7 @@ public class JLBP implements ExtractionAlgorithm {
 	public List<IFeature> calculate(Image image) {
 		List<IFeature> result = new ArrayList<IFeature>();
 		LBPFeature feature = new LBPFeature();
-		feature.descriptors = this.localBinaryPattern(image.getBitmap(), 5, 5);
+		feature.descriptors = this.localBinaryPattern(image.getBitmap(), this.rows, this.cols);
 		result.add(feature);
 		return result;
 	}

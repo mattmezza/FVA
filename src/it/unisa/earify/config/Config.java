@@ -19,11 +19,11 @@ public class Config {
 	}
 	
 	public boolean lbp() {
-		return this.sp.getBoolean("extr_algo_use_lbp", false);
+		return this.sp.getBoolean("extr_algo_use_lbp", true);
 	}
 	
 	public boolean sift() {
-		return this.sp.getBoolean("extr_algo_use_sift", false);
+		return this.sp.getBoolean("extr_algo_use_sift", true);
 	}
 	
 	public int numberOfImagesToUse() {

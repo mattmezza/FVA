@@ -1,7 +1,7 @@
 package it.unisa.earify.database.exceptions;
 
 /**
- * Eccezione lanciata quando si prova ad aggiungere al database un utente già registrato
+ * Eccezione lanciata quando si prova ad aggiungere al database un utente gi&agrave; registrato
  * @author simone
  *
  */

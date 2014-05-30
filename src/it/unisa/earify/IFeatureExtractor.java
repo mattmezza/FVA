@@ -22,10 +22,10 @@ public interface IFeatureExtractor {
 	/**
 	 * Estrae le caratteristiche delle immagini passate in input, utilizzando gli algoritmi specificati.
 	 * Restituisce un oggetto di tipo Map<String, List<List<IFeature>>> (ovvero una mappa del tipo "Nome algoritmo -> Lista").
-	 * In particolare, la lista contiene n elementi, dove n è il numero di immagini passate in input e, per ogni immagine i, 
-	 * è presente un'ulteriore lista di feature relative all'immagine i-esima.
-	 * Ad esempio, se in input è data una lista di due immagini e sono attivi gli algoritmi SIFT e LBP, il valore di ritorno 
-	 * sarà formato così:
+	 * In particolare, la lista contiene n elementi, dove n &egrave; il numero di immagini passate in input e, per ogni immagine i, 
+	 * &egrave; presente un'ulteriore lista di feature relative all'immagine i-esima.
+	 * Ad esempio, se in input &egrave; data una lista di due immagini e sono attivi gli algoritmi SIFT e LBP, il valore di ritorno 
+	 * sar&agrave; formato cos&igrave;:
 	 * Map(
 	 * "SIFT",  List(List<IFeature>, List<IFeature>)
 	 * "LBP",   List(List<IFeature>, List<IFeature>)
@@ -39,9 +39,9 @@ public interface IFeatureExtractor {
 	 * @param pImages Lista di immagini di cui calcolare i vettori delle caratteristiche
 	 * @param pUsername Nome dell'utente
 	 * @param pEar Identificativo dell'orecchio. Usare le costanti di classe EAR_RIGHT e EAR_LEFT
-	 * @param pQuality Punteggio di qualità delle immagini date. Valore tra 0 e 1
+	 * @param pQuality Punteggio di qualit&agrave; delle immagini date. Valore tra 0 e 1
 	 * @return Una mappa che associa ogni algoritmo a una lista di lista di features.
-	 * @throws InvalidActionException Se l'azione specificata non è valida
+	 * @throws InvalidActionException Se l'azione specificata non &egrave; valida
 	 */
 	public Map<String, List<List<IFeature>>> extractFeature(List<Image> pImages, String pUsername, int pEar, float pQuality);
 	

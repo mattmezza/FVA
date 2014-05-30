@@ -33,7 +33,7 @@ public class UsersControl {
 	/**
 	 * Registra un utente nel sistema
 	 * @param pUsername Nome utente
-	 * @throws AlreadyRegisteredUserException Se l'utente è già presente nel database
+	 * @throws AlreadyRegisteredUserException Se l'utente &egrave; gi&agrave; presente nel database
 	 */
 	public void registerUser(String pUsername) throws AlreadyRegisteredUserException {
 		if (this.getUser(pUsername) != null)
