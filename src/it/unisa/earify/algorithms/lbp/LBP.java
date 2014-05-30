@@ -15,6 +15,8 @@ import android.graphics.Bitmap;
  *
  */
 public class LBP {
+	public static final int ROWS = 5;
+	public static final int COLS = 5;
 
 	/**
 	 * Restituisce l'istanza contenente l'implementazione corrente dell'algoritmo
@@ -23,7 +25,7 @@ public class LBP {
 	 */
 	public static ExtractionAlgorithm getInstance() {
 		if(LBP.instance == null) {
-			LBP.instance = new NativeLBP();
+			LBP.instance = new NativeLBP(ROWS, COLS);
 		}
 		return LBP.instance;
 	}

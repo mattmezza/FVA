@@ -73,6 +73,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	 */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.fragment_main);
 		
 		this.im2extr = new ArrayList<Uri>();
@@ -165,7 +166,7 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	}
 
 	/**
-	 * Metodo chiamato quando è stata selezionata un'immagine dall'utente.
+	 * Metodo chiamato quando &egrave; stata selezionata un'immagine dall'utente.
 	 * @param requestCode Codice di richiesta
 	 * @param resultCode Codice indicante il risultato
 	 * @param data Dati relativi all'immagine scelta dall'utente
@@ -179,7 +180,6 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 
 				try {
 					im2extr.add(selectedImageUri);
-					Log.d("Debug", "Aggiunta immagine " + selectedImagePath + "; totale: "+ im2extr.size());
 				} catch (Exception e) {
 					Log.d("Error", e.getMessage());
 					Toast.makeText(getApplicationContext(), e.toString(),
@@ -286,8 +286,6 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 
 	@Override
 	public void onExtractorFinished(Map<String, List<List<IFeature>>> result) {
-		if (result != null)
-			Log.d("MainActivity", result.toString());
 		progressDialog.cancel();
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle("Wowowow");
@@ -310,7 +308,6 @@ public class MainActivity extends Activity implements ExtractorDelegate {
 	public void onExtractorError(Exception e) {
 		Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG)
 				.show();
-		Log.d("MainActivity", e.toString());
 		progressDialog.cancel();
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle("Oops");

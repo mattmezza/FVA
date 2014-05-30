@@ -1,0 +1,14 @@
+it.unisa.earify
+it.unisa.earify.algorithms
+it.unisa.earify.algorithms.exceptions
+it.unisa.earify.algorithms.lbp
+it.unisa.earify.algorithms.sift
+it.unisa.earify.config
+it.unisa.earify.database
+it.unisa.earify.database.acquisitions
+it.unisa.earify.database.exceptions
+it.unisa.earify.database.users
+it.unisa.earify.exceptions
+it.unisa.earify.ui
+it.unisa.earify.util
+org.opencv

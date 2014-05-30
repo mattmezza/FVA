@@ -19,10 +19,17 @@ import it.unisa.earify.algorithms.Image;
 public class NativeLBP implements ExtractionAlgorithm {
 
 	public static final String NAME = "LBP";
+	private int rows;
+	private int cols;
+	
+	public NativeLBP(int pRows, int pCols) {
+		this.rows = pRows;
+		this.cols = pCols;
+	}
 	
 	@Override
 	public List<IFeature> calculate(Image image) {
-		int[] result = new LBPNativeLibrary().extractFeatures(image.getPath(), 5, 5);
+		int[] result = new LBPNativeLibrary().extractFeatures(image.getPath(), this.rows, this.cols);
 		List<IFeature> features = new ArrayList<IFeature>();
 		LBPFeature mainFeature = new LBPFeature();
 		mainFeature.descriptors = result;

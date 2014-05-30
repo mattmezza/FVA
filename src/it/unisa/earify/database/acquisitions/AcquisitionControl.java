@@ -197,12 +197,9 @@ public class AcquisitionControl {
 	        ObjectOutputStream oos = new ObjectOutputStream(baos);
 	        oos.writeObject(pObject);
 	        oos.close();
-	        
-	        Log.d("DEBUG", baos.toString());
-	        
+	        	        
 	        return baos.toByteArray();
 		} catch (IOException e) {
-			Log.d("DEBUG ERROR", e.toString());
 			return new byte[] {};
 		}
 	}

@@ -65,7 +65,7 @@ public class EarifyDatabaseHelper extends SQLiteOpenHelper {
 	}
  
 	/**
-	 * Metodo invocato automaticamente se la versione del database è aggiornata. 
+	 * Metodo invocato automaticamente se la versione del database &egrave; aggiornata. 
 	 * NON USARE
 	 */
 	@Override

@@ -7,20 +7,20 @@ import java.util.Map;
 
 /**
  * Interfaccia che specifica il comportamento di un oggetto in grado di ricevere il risultato di un azione di estrazione
- * delle caratteristiche in modo asincrono. Un ExtractorDelegate viene notificato quando l'estrazione è completa o se si
- * è verificato un errore
+ * delle caratteristiche in modo asincrono. Un ExtractorDelegate viene notificato quando l'estrazione &egrave; completa o se si
+ * &egrave; verificato un errore
  * @author simone
  *
  */
 public interface ExtractorDelegate {
 	/**
-	 * Se l'estrazione è finita correttamente è chiamato questo metodo con il risultato dell'estrazione
+	 * Se l'estrazione &egrave; finita correttamente &egrave; chiamato questo metodo con il risultato dell'estrazione
 	 * @param result Risultato dell'estrazione
 	 */
 	public void onExtractorFinished(Map<String, List<List<IFeature>>> result);
 	
 	/**
-	 * Se si è verificato un errore durante il processo di estrazione, verrà richiamato questo metodo.
+	 * Se si &egrave; verificato un errore durante il processo di estrazione, verr&agrave; richiamato questo metodo.
 	 * @param e Errore
 	 */
 	public void onExtractorError(Exception e);
