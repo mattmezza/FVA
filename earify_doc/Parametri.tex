@@ -16,8 +16,8 @@ Map(
 )
 \end{lstlisting}
 \vspace{0.8cm}
-Ad ogni immagine è associata, dunque, una lista di IFeature (per ogni algoritmo). IFeature è un'interfaccia che descrive una feature generica;\\ l'implementazione cambia in base all'algoritmo. In allegato invio i file sorgenti di IFeature, LBPFeature, SIFTFeature (le ultime due sono implementazioni concrete della prima) e Feature (la classe della libreria per il SIFT che noi incapsuliamo in SIFTFeature).\\
+Ad ogni immagine è associata, dunque, una lista di IFeature (per ogni algoritmo). IFeature è un'interfaccia che descrive una feature generica;\\ l'implementazione cambia in base all'algoritmo. 
 L'algoritmo LBP restituisce, per ogni immagine, una singola IFeature (di tipo LBPFeature) che ha al suo interno, come descrittori (variabile "descriptors"), un array di interi.\\
 L'algoritmo SIFT restituisce, per ogni immagine, un numero variabile di IFeature (di tipo SIFTFeature) dipendente dall'immagine.\\
-La classe IFeature ha un metodo (getDistance(IFeature)) adibito al calcolo della distanza tra due IFeature: il metodo è già implementato per l'algoritmo SIFT (è definito nella libreria che abbiamo utilizzato) ma non per LBP.\\
+La classe IFeature ha un metodo (getDistance(IFeature)) adibito al calcolo della distanza tra due IFeature: il metodo è già implementato per l'algoritmo SIFT ma non per LBP.\\
 Le feature sono serializzate nel database in fase di registrazione.\\

@@ -248,3 +248,13 @@ proguard/
 # ignore libEarify.so
 jni/Android.mk
 libs/*/libEarify.so
+
+# latex and documentation
+*.ucls
+earify_doc/img/*.gif
+*.aux
+*.bbl
+*.blg
+*.synctex.gz
+*.texnicle
+*.main.toc
